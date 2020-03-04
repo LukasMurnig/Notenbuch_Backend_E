@@ -1,0 +1,22 @@
+{
+  "name": "notenbuch_backend",
+  "version": "1.0.0",
+  "description": "The Backend for our SYP Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/firedragon0410/Notenbuch_Backend.git"
+  },
+  "author": "Lukas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/firedragon0410/Notenbuch_Backend/issues"
+  },
+  "homepage": "https://github.com/firedragon0410/Notenbuch_Backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
