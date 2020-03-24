@@ -1,7 +1,7 @@
 'use strict'
 
 const Sequelize = require('sequelize');
-const sequelize = require('../server').sequelize;
+const sequelize = require('../start').sequelize;
 const user = sequelize.define('user', {
     id: {
         type: Sequelize.INTEGER,
