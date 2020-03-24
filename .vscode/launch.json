@@ -1,4 +1,5 @@
 {
+
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
@@ -11,6 +12,7 @@
     ],
     "configurations": [
 
+
         {
             "type": "chrome",
             "request": "launch",
@@ -22,7 +24,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch node as backend app",
-            "program": "${workspaceFolder}\\server.js",
+            "program": "${workspaceFolder}\\start.js",
         },
     ]
 }
