@@ -3,6 +3,7 @@ const hostname = 'notenbuch.htl-vil';
 const port = 8840;
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize('NotenbuchDB', 'test', 'test',{
@@ -41,6 +42,7 @@ function defaultSetup() {
     const bodyParser = require('body-parser');
     const user = require('./users/user-router');
     app.use(bodyParser.json());
+    app.use(cors());
     app.use('/api/user', user);
     app.listen(port, hostname, function () {
         console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`)
