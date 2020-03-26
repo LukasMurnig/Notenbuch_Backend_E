@@ -40,10 +40,12 @@ function errorSetup(error) {
 
 function defaultSetup() {
     const bodyParser = require('body-parser');
-    const user = require('./users/user-router');
+    const userRouter = require('./users/user-router');
+    const loginRouter = require('./login/login-router');
     app.use(bodyParser.json());
     app.use(cors());
-    app.use('/api/user', user);
+    app.use('/api/user', userRouter);
+    app.use('/api', loginRouter)
     app.listen(port, hostname, function () {
         console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`)
     });
