@@ -43,11 +43,13 @@ function defaultSetup() {
     const bodyParser = require('body-parser');
     const userRouter = require('./users/user-router');
     const loginRouter = require('./login/login-router');
+    const periodRouter = require('./login/period-router');
     app.use(bodyParser.json());
     app.use(bearerToken());
     app.use(cors());
     app.use('/api', loginRouter);
     app.use('/api/user', userRouter);
+    app.use('/api/period', periodRouter);
     app.listen(port, hostname, function () {
         console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`)
     });
