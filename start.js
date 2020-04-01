@@ -3,6 +3,7 @@ const hostname = 'notenbuch.htl-vil';
 const port = 8840;
 const express = require('express');
 const app = express();
+const bearerToken = require('express-bearer-token');
 const cors = require('cors');
 const { Sequelize } = require('sequelize');
 
@@ -43,9 +44,10 @@ function defaultSetup() {
     const userRouter = require('./users/user-router');
     const loginRouter = require('./login/login-router');
     app.use(bodyParser.json());
+    app.use(bearerToken());
     app.use(cors());
+    app.use('/api', loginRouter);
     app.use('/api/user', userRouter);
-    app.use('/api', loginRouter)
     app.listen(port, hostname, function () {
         console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`)
     });
