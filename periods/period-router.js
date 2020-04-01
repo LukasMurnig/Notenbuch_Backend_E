@@ -43,31 +43,27 @@ router.get('/:id', selectById, async (req, res) => {
 
 router.post('/', async (req, res) => {
     let payload = req.body;
-    if (Object.keys(payload).length != 2) {
+    if (Object.keys(payload).length != 4) {
         res.status(400).json('Too much or less properties!');
         return;
     }
 
-    if (payload.id == undefined || payload.name == undefined) {
+    if (payload.label == undefined  || payload.from == undefined || payload.till == undefined || payload.active == undefined) {
         res.status(400).json('period properties are not allowed to be undefined!');
         return;
     }
 
 
-    if (typeof (payload.id) != 'string' || typeof (payload.name) != 'string' ) {
+    if (typeof (payload.label) != 'string' || typeof (payload.from) != 'string'  || typeof (payload.till) != 'string' ||  typeof (payload.active) != 'boolean' ) {
         res.status(400).json('not typeof string');
         return;
     }
-
-    if (isNaN(payload.id)) {
-        res.status(400).json('id is not a number');
-        return;
-    }
-    payload.id = parseInt(payload.id);
     try {
         const savedperiod = await period.create({
-            id: payload.id,
-            name: payload.name
+            label: payload.label,
+            from: payload.from,
+            till: payload.till,
+            active: payload.active
         });
         res.status(201).json(savedperiod);
     } catch (error) {
@@ -98,7 +94,10 @@ router.put('/:id', selectById, async (req, res) => {
                 req.selectedperiod.password = key;
             }
             const savedperiod = await req.selectedperiod[0].update({
-                fname: toUpdateperiod.name,
+                label: toUpdateperiod.label,
+                from: toUpdateperiod.from,
+                till: toUpdateperiod.till,
+                active: toUpdateperiod.active
             });
             res.status(200).json(savedperiod);
         } catch (error) {
