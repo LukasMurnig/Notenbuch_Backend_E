@@ -1,6 +1,6 @@
 'use strict'
 
-let selectionFields = '';
+let selectionFields = 'id label from till active';
 const express = require('express');
 const crypto = require('crypto');
 const router = express.Router();

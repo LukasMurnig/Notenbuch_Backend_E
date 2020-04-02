@@ -9,7 +9,7 @@ const period = sequelize.define('period', {
         primaryKey: true,
         unique: true
     },
-    label: {type: Sequelize.STRING, unique: true},
+    label: {type: Sequelize.STRING},
     from: {type: Sequelize.STRING},
     till: {type: Sequelize.STRING},
     active: {type: Sequelize.STRING},
