@@ -14,7 +14,7 @@ const user = sequelize.define('user', {
     username: {type: Sequelize.STRING, unique: true},
     password: {type: Sequelize.STRING},
 }, {
-    tableName: 'user',
+    tableName: 'User',
 	timestamps: false,
 	freezeTableName: true
 });

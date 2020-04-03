@@ -46,8 +46,8 @@ function defaultSetup() {
     app.use(bodyParser.json());
     app.use(bearerToken());
     app.use(cors());
-    app.use('/api', loginRouter);
     app.use('/api/user', userRouter);
+    app.use('/api', loginRouter);
     app.listen(port, hostname, function () {
         console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`)
     });
