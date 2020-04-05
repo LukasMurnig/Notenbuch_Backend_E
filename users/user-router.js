@@ -154,8 +154,6 @@ router.put('/:id', selectById, async (req, res) => {
         }
     }
 });
-
-    try {
 router.delete('/:id', authenticate, selectById, async (req, res) => {
     try {
         const user = req.selectedUser[0].destroy();
