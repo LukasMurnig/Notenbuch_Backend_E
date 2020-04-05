@@ -154,6 +154,31 @@ router.put('/:id', selectById, async (req, res) => {
         }
     }
 });
+
+function authenticate(req, res, next) {
+    let token = req.token;
+    if (token == undefined) {
+        res.status(401).send('you are not authorised');
+        return;
+    }
+    try {
+        let mykey = crypto.createDecipheriv(algorithm, key, iv);
+        var mystr = mykey.update(token, 'hex', 'utf8')
+        mystr += mykey.final('utf8');
+        let obj = JSON.parse(mystr);
+        if (obj.expire < Date.now()) {
+            res.header('WWW-Authenticate', 'Basic realm="Access expired", charset="UTF-8"');
+            res.status(401).send('you are not authorised');
+            return;
+        }
+    } catch (error) {
+        res.status(401).send('you are not authorised');
+        return;
+    }
+    req.user = mystr;
+    next();
+}
+
 router.delete('/:id', authenticate, selectById, async (req, res) => {
     try {
         const user = req.selectedUser[0].destroy();
