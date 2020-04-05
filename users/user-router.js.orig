@@ -73,8 +73,14 @@ router.post('/', async (req, res) => {
         }, selectionFields);
         res.status(201).json(savedUser);
     } catch (error) {
-        console.error(error);
+<<<<<<< HEAD
         res.status(400).json('creating user did not work!'+error);
+    }
+});
+
+router.put('/:id', authenticate, selectById, async (req, res) => {
+=======
+        console.error(error);
         res.status(400).json('creating user did not work!');
     }
 });
@@ -121,6 +127,7 @@ router.post('/changePassword', async (req, res) => {
     }
 });
 router.put('/:id', selectById, async (req, res) => {
+>>>>>>> 090b6e7a27c78ec5ed8b7a843527fe0ff7943767
     let toUpdateUser = req.body;
     //by default you can not iterate mongoose object -
     let compareUser = JSON.parse(JSON.stringify(req.selectedUser));
@@ -155,7 +162,30 @@ router.put('/:id', selectById, async (req, res) => {
     }
 });
 
+function authenticate(req, res, next) {
+    let token = req.token;
+    if (token == undefined) {
+        res.status(401).send('you are not authorised');
+        return;
+    }
     try {
+        let mykey = crypto.createDecipheriv(algorithm, key, iv);
+        var mystr = mykey.update(token, 'hex', 'utf8')
+        mystr += mykey.final('utf8');
+        let obj = JSON.parse(mystr);
+        if (obj.expire < Date.now()) {
+            res.header('WWW-Authenticate', 'Basic realm="Access expired", charset="UTF-8"');
+            res.status(401).send('you are not authorised');
+            return;
+        }
+    } catch (error) {
+        res.status(401).send('you are not authorised');
+        return;
+    }
+    req.user = mystr;
+    next();
+}
+
 router.delete('/:id', authenticate, selectById, async (req, res) => {
     try {
         const user = req.selectedUser[0].destroy();
