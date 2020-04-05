@@ -28,7 +28,7 @@ async function selectById(req, res, next) {
     next();
 }
 
-router.get('/', async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
     try {
         const users = await User.findAll({}, selectionFields);
         res.status(200).json(users);
@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', selectById, async (req, res) => {
+router.get('/:id', authenticate, selectById, async (req, res) => {
     res.status(200).json(req.selectedUser);
 });
 
@@ -78,11 +78,11 @@ router.post('/', async (req, res) => {
         });
         res.status(201).json(savedUser);
     } catch (error) {
-        res.status(400).json('creating user did not work!');
+        res.status(400).json('creating user did not work!'+error);
     }
 });
 
-router.put('/:id', selectById, async (req, res) => {
+router.put('/:id', authenticate, selectById, async (req, res) => {
     let toUpdateUser = req.body;
     //by default you can not iterate mongoose object -
     let compareUser = JSON.parse(JSON.stringify(req.selectedUser));
@@ -117,7 +117,31 @@ router.put('/:id', selectById, async (req, res) => {
     }
 });
 
-router.delete('/:id', selectById, async (req, res) => {
+function authenticate(req, res, next) {
+    let token = req.token;
+    if (token == undefined) {
+        res.status(401).send('you are not authorised');
+        return;
+    }
+    try {
+        let mykey = crypto.createDecipheriv(algorithm, key, iv);
+        var mystr = mykey.update(token, 'hex', 'utf8')
+        mystr += mykey.final('utf8');
+        let obj = JSON.parse(mystr);
+        if (obj.expire < Date.now()) {
+            res.header('WWW-Authenticate', 'Basic realm="Access expired", charset="UTF-8"');
+            res.status(401).send('you are not authorised');
+            return;
+        }
+    } catch (error) {
+        res.status(401).send('you are not authorised');
+        return;
+    }
+    req.user = mystr;
+    next();
+}
+
+router.delete('/:id', authenticate, selectById, async (req, res) => {
     try {
         const user = req.selectedUser[0].destroy();
         res.status(204).json('User was deleted successfully');

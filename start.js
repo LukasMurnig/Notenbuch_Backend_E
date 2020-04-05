@@ -9,7 +9,6 @@ const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize('NotenbuchDB', 'test', 'test',{
     //host: 'localhost',
-    port: 8443,
     dialect: 'mssql',
     logging: false
 });
@@ -43,7 +42,7 @@ function defaultSetup() {
     const bodyParser = require('body-parser');
     const userRouter = require('./users/user-router');
     const loginRouter = require('./login/login-router');
-    const periodRouter = require('./login/period-router');
+    const periodRouter = require('./periods/period-router');
     app.use(bodyParser.json());
     app.use(bearerToken());
     app.use(cors());

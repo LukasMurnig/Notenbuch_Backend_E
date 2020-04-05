@@ -54,30 +54,6 @@ router.post('/login', async (req, res, next) => {
         return;
     }
 });
-router.use(
-    function authenticate(req, res, next) {
-        let token = req.token;
-        if (token == undefined) {
-            res.status(401).send('you are not authorised');
-            return;
-        }
-        try {
-            let mykey = crypto.createDecipheriv(algorithm, key, iv);
-            var mystr = mykey.update(token, 'hex', 'utf8')
-            mystr += mykey.final('utf8');
-            let obj = JSON.parse(mystr);
-            if (obj.expire < Date.now()) {
-                res.header('WWW-Authenticate', 'Basic realm="Access expired", charset="UTF-8"');
-                res.status(401).send('you are not authorised');
-                return;
-            }
-        } catch (error) {
-            res.status(401).send('you are not authorised');
-            return;
-        }
-        req.user = mystr;
-        next();
-    });
 
 router.get('/whoamI', (req, res) => {
     res.status(200).send(req.user);
