@@ -37,7 +37,7 @@ router.post('/login', async (req, res, next) => {
                 password: passwordDatenbank
             })
         }, selectionFields);
-        if (user.length != 1) {
+        if (user.length < 1) {
             res.status(401).send('you are not authorised');
             return;
         }

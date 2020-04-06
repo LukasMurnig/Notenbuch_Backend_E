@@ -1,14 +1,15 @@
 'use strict'
-const hostname = 'notenbuch.htl-vil';
-const port = 8840;
+const hostname = 'localhost';
+const port = process.env.PORT || 8840;
 const express = require('express');
+var fs = require("fs");
 const app = express();
 const bearerToken = require('express-bearer-token');
 const cors = require('cors');
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('NotenbuchDB', 'test', 'test',{
-    //host: 'localhost',
+const sequelize = new Sequelize('notenbuch', 'notenbuch', '&test12', {
+    host: 'den1.mssql7.gear.host',
     dialect: 'mssql',
     logging: false
 });
@@ -29,16 +30,18 @@ async function connectdatabase() {
 }
 
 function errorSetup(error) {
+
     app.use('*', (req, res) => {
         res.status(500).send('something went wrong. Inform the administrator');
     });
 
-    app.listen(port, hostname, function () {
-        console.error(`Failure: Notenbuch is up and running on ${hostname}:${port}, but there were problems during the start up: `+error);
+    app.listen(port, function () {
+        console.error(`Failure: Notenbuch is up and running on ${hostname}:${port}, but there were problems during the start up: ` + error);
     });
 }
 
 function defaultSetup() {
+
     const bodyParser = require('body-parser');
     const userRouter = require('./users/user-router');
     const loginRouter = require('./login/login-router');
@@ -49,9 +52,10 @@ function defaultSetup() {
     app.use('/api/user', userRouter);
     app.use('/api', loginRouter);
     app.use('/api/period', periodRouter);
-    app.listen(port, hostname, function () {
+
+    app.listen(port, function () {
         console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`)
     });
 }
 
-module.exports = {sequelize};
+module.exports = { sequelize };

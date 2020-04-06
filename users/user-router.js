@@ -62,9 +62,20 @@ router.post('/', async (req, res) => {
         return;
     }
 
+    let usernameDatenbank = payload.username;
     let password = crypto.createHash('sha256').update(payload.password).digest('base64');
     payload.password = password;
+
     try {
+        const user = await User.findAll({
+            where: {
+                username: usernameDatenbank
+            }
+        }, selectionFields);
+        if (user.length > 0) {
+            res.status(409).send('User already exists');
+            return;
+        }
         const savedUser = await User.create({
             firstname: payload.firstname,
             lastname: payload.lastname,
