@@ -21,7 +21,7 @@ async function selectById(req, res, next) {
                 id: id
             }
         }, selectionFields);
-        req.selectedUser = user;
+            req.selectedUser = user;
     } catch (error) {
         console.log(error);
         res.status(500).send('something went wrong');
@@ -134,6 +134,10 @@ router.post('/changePassword', async (req, res) => {
 router.put('/:id', selectById, async (req, res) => {
     let toUpdateUser = req.body;
     //by default you can not iterate mongoose object -
+    if(req.selectedUser.length == 0){
+        res.status(400).json('no user with this id!');
+        return;
+    }
     let compareUser = JSON.parse(JSON.stringify(req.selectedUser));
     //check all properties
     if (Object.keys(compareUser[0]).length != Object.keys(toUpdateUser).length) {
@@ -195,7 +199,7 @@ router.delete('/:id', authenticate, selectById, async (req, res) => {
         const user = req.selectedUser[0].destroy();
         res.status(204).json('User was deleted successfully');
     } catch (error) {
-        res.status(400).json('something went wrong!');
+        res.status(500).json('something went wrong!');
     }
 });
 module.exports = router;

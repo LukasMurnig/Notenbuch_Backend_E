@@ -2,21 +2,20 @@
 
 const Sequelize = require('sequelize');
 const sequelize = require('../start').sequelize;
-const period = sequelize.define('period', {
+const Period = sequelize.define('period', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        primaryKey: true,
-        unique: true
+        primaryKey: true
     },
-    label: {type: Sequelize.STRING},
-    from: {type: Sequelize.STRING},
-    till: {type: Sequelize.STRING},
-    active: {type: Sequelize.STRING},
+    label: { type: Sequelize.STRING, unique: true },
+    from: { type: Sequelize.DATE },
+    till: { type: Sequelize.DATE },
+    active: { type: "BIT" },
 }, {
     tableName: 'period',
-	timestamps: false,
-	freezeTableName: true
+    timestamps: false,
+    freezeTableName: true
 });
 
-module.exports = period;
+module.exports = Period;
