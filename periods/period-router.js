@@ -1,9 +1,10 @@
 'use strict'
 
-let selectionFields = 'id label from till active';
+let selectionFields = 'id label from till active owner organisationalUnit';
 const express = require('express');
 const router = express.Router();
 const Period = require('./../periods/period-model');
+const User = require('./../users/user-model');
 
 async function selectById(req, res, next) {
     try {
@@ -11,6 +12,25 @@ async function selectById(req, res, next) {
         const period = await Period.findAll({
             where: {
                 id: id
+            }
+        }, selectionFields);
+        if(period.length==0){
+            res.status(400).json('no period with this id!');
+            return;
+        }
+        req.selectedperiod = period;
+    } catch (error) {
+        console.log(error);
+        res.status(500).json('something went wrong');
+    }
+    next();
+}
+async function selectByLabel(req, res, next) {
+    try {
+        let label = req.params.label
+        const period = await Period.findAll({
+            where: {
+                label: label
             }
         }, selectionFields);
         if(period.length==0){
@@ -38,20 +58,26 @@ router.get('/:id', selectById, async (req, res) => {
     res.status(200).json(req.selectedperiod);
 });
 
+router.get('/:label', selectByLabel, async (req, res) => {
+    res.status(200).json(req.selectedperiod);
+});
+
 router.post('/', async (req, res) => {
     let payload = req.body;
-    if (Object.keys(payload).length != 4) {
+    if (Object.keys(payload).length != 5) {
         res.status(400).json('Too much or less properties!');
         return;
     }
 
-    if (payload.label == undefined || payload.from == undefined || payload.till == undefined || payload.active == undefined) {
+    if (payload.label == undefined || payload.from == undefined || payload.till == undefined || payload.active == undefined
+        || payload.owner == undefined) {
         res.status(400).json('period properties are not allowed to be undefined!');
         return;
     }
 
 
-    if (typeof (payload.label) != 'string' || typeof (payload.from) != 'string' || typeof (payload.till) != 'string' || typeof (payload.active) != 'boolean') {
+    if (typeof (payload.label) != 'string' || typeof (payload.from) != 'string' || typeof (payload.till) != 'string' 
+    || typeof (payload.active) != 'boolean' || typeof(payload.owner) != 'string' ){
         res.status(400).json('not typeof string or boolean');
         return;
     }
@@ -62,11 +88,17 @@ router.post('/', async (req, res) => {
         return;
     }
     try {
+        let success = checkValidate(payload.owner);
+        if (success == false){
+            res.status(400).json('there is no userthis username in our Database.');
+            return;
+        }
         const savedperiod = await Period.create({
             label: payload.label,
             from: new Date(payload.from),
             till: new Date(payload.till),
-            active: payload.active
+            active: payload.active,
+            owner: payload.owner
         });
         res.status(201).json(savedperiod);
     } catch (error) {
@@ -98,11 +130,17 @@ router.put('/:id', selectById, async (req, res) => {
                 res.status(400).json('from or till are not valid for Date type');
                 return;
             }
+            let success = checkValidate(toUpdateperiod.owner);
+            if (success == false){
+                res.status(400).json('there is no userthis username in our Database.');
+                return;
+            }
             const savedperiod = await req.selectedperiod[0].update({
                 label: toUpdateperiod.label,
                 from: new Date(toUpdateperiod.from),
                 till: new Date(toUpdateperiod.till),
-                active: toUpdateperiod.active
+                active: toUpdateperiod.active,
+                owner: toUpdateperiod.owner
             });
             res.status(200).json(savedperiod);
         } catch (error) {
@@ -120,4 +158,16 @@ router.delete('/:id', selectById, async (req, res) => {
         res.status(400).json('something went wrong!');
     }
 });
+
+async function checkValidate( username, labelorganisationalUnit){
+    const users = await User.findAll({
+        where: {
+            username: username
+        }
+    });
+    if(users.length == 0 || users == undefined){
+        return false;
+    }
+    return true;
+}
 module.exports = router;

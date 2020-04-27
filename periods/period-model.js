@@ -12,6 +12,7 @@ const Period = sequelize.define('period', {
     from: { type: Sequelize.DATE },
     till: { type: Sequelize.DATE },
     active: { type: "BIT" },
+    owner: {type: Sequelize.STRING},
 }, {
     tableName: 'period',
     timestamps: false,

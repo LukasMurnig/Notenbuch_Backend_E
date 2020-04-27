@@ -13,6 +13,7 @@ const user = sequelize.define('user', {
     lastname: {type: Sequelize.STRING},
     username: {type: Sequelize.STRING, unique: true},
     password: {type: Sequelize.STRING},
+    email: {type: Sequelize.STRING, unique: true},
 }, {
     tableName: 'User',
 	timestamps: false,

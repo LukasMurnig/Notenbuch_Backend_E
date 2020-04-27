@@ -3,7 +3,8 @@ CREATE TABLE [dbo].[Period] (
     [label]         VARCHAR(100) NOT NULL unique,
     [from]          date NOT NULL,
 	[till]          date NOT NULL,
-	[active]		bit NOT NULL Default 0
+	[active]		bit NOT NULL Default 0,
+	[owner]			VARCHAR(200) NOT NULL
 );
 
 SET IDENTITY_INSERT [dbo].[Period] OFF

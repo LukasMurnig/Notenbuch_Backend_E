@@ -3,7 +3,8 @@ CREATE TABLE [dbo].[User] (
     [FirstName]         VARCHAR(100) NOT NULL,
     [LastName]          VARCHAR(100) NOT NULL,
 	[UserName]          VARCHAR(200) NOT NULL unique,
-	[Password]			VARCHAR(100) NOT NULL
+	[Password]			VARCHAR(100) NOT NULL,
+	[email]		VARCHAR(100) NOT NULL unique
 );
 
 SET IDENTITY_INSERT [dbo].[User] OFF

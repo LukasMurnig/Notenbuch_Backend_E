@@ -1,6 +1,6 @@
 'use strict'
 
-let selectionFields = 'id firstname lastname username password';
+let selectionFields = 'id firstname lastname username password email';
 const express = require('express');
 const crypto = require('crypto');
 const router = express.Router();
@@ -29,6 +29,21 @@ async function selectById(req, res, next) {
     next();
 }
 
+async function selectByUsername(req, res, next) {
+    try {
+        let username = req.params.username
+        const user = await User.findAll({
+            where: {
+                username: username
+            }
+        }, selectionFields);
+            req.selectedUser = user;
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('something went wrong');
+    }
+    next();
+}
 router.get('/', authenticate, async (req, res) => {
     try {
         const users = await User.findAll({}, selectionFields);
@@ -42,22 +57,25 @@ router.get('/:id', authenticate, selectById, async (req, res) => {
     res.status(200).json(req.selectedUser);
 });
 
+router.get('/:username', authenticate, selectByUsername, async (req, res) => {
+    res.status(200).json(req.selectedUser);
+});
 router.post('/', async (req, res) => {
     let payload = req.body;
-    if (Object.keys(payload).length != 4) {
+    if (Object.keys(payload).length != 5) {
         res.status(400).json('Too much or less properties!');
         return;
     }
 
     if (payload.firstname == undefined || payload.lastname == undefined ||
-        payload.username == undefined || payload.password == undefined) {
+        payload.username == undefined || payload.password == undefined || payload.email == undefined) {
         res.status(400).json('User properties are not allowed to be undefined!');
         return;
     }
 
 
     if (typeof (payload.firstname) != 'string' || typeof (payload.lastname) != 'string' ||
-        typeof (payload.username) != 'string' || typeof (payload.password) != 'string') {
+        typeof (payload.username) != 'string' || typeof (payload.password) != 'string' || typeof(payload.email) != 'string') {
         res.status(400).json('not typeof string');
         return;
     }
@@ -80,7 +98,8 @@ router.post('/', async (req, res) => {
             firstname: payload.firstname,
             lastname: payload.lastname,
             username: payload.username,
-            password: payload.password
+            password: payload.password,
+            email: payload.email
         }, selectionFields);
         res.status(201).json(savedUser);
     } catch (error) {
@@ -160,7 +179,8 @@ router.put('/:id', selectById, async (req, res) => {
             const savedUser = await req.selectedUser[0].update({
                 firstname: toUpdateUser.firstname,
                 lastname: toUpdateUser.lastname,
-                password: toUpdateUser.password
+                password: toUpdateUser.password,
+                email: toUpdateUser.email
             });
             res.status(200).json(savedUser);
         } catch (error) {
