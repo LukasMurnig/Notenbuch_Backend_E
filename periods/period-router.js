@@ -5,6 +5,7 @@ const express = require('express');
 const router = express.Router();
 const Period = require('./../periods/period-model');
 const User = require('./../users/user-model');
+const OrganisationalUnit = require('./../organisationalUnits/organisationalUnit-model');
 
 async function selectById(req, res, next) {
     try {
@@ -152,7 +153,12 @@ router.put('/:id', selectById, async (req, res) => {
 
 router.delete('/:id', selectById, async (req, res) => {
     try {
-        const period = req.selectedperiod[0].destroy();
+        const period = req.selectedperiod[0];
+        findAllOrganisationalUnitstoDestroy(req,res);
+        for(let indx=0;indx<req.selectedOU.length;indx++){
+            req.selectedOU[indx].destroy();
+        }
+        req.selectedperiod[0].destroy();
         res.status(204).json('period was deleted successfully');
     } catch (error) {
         res.status(400).json('something went wrong!');
@@ -169,5 +175,19 @@ async function checkValidate( username, labelorganisationalUnit){
         return false;
     }
     return true;
+}
+
+async function findAllOrganisationalUnitstoDestroy(req, res){
+    try{
+    const OU = await OrganisationalUnit.findAll({
+        where: {
+            "period-label": req.selectedperiod[0]
+        }
+    });
+    req.selectedOU = OU;
+    }catch(error){
+        console.log(error);
+        res.status(500).json('something went wrong');
+    }
 }
 module.exports = router;
