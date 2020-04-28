@@ -64,3 +64,94 @@ router.get('/:label', selectByLabel, async (req, res) => {
     res.status(200).json(req.selectedOU);
 });
 module.exports = router;
+
+router.post('/', async (req, res) => {
+    let payload = req.body;
+    if (Object.keys(payload).length != 6) {
+        res.status(400).json('Too much or less properties!');
+        return;
+    }
+
+    if (payload.label == undefined || payload.pupil-group-label == undefined || payload.subject-label == undefined || payload.notes == undefined
+        || payload.owner == undefined || payload.period-label == undefined) {
+        res.status(400).json('period properties are not allowed to be undefined!');
+        return;
+    }
+
+
+    if (typeof (payload.label) != 'string' || typeof (payload.pupil-group-label) != 'string' || typeof (payload.subject-label) != 'string' 
+    || typeof (payload.notes) != 'string' || typeof(payload.owner) != 'string' || typeof(payload.period-label) != 'string'){
+        res.status(400).json('not typeof string or boolean');
+        return;
+    }
+
+    try {
+        let success = checkValidate(payload.owner);
+        if (success == false){
+            res.status(400).json('there is no organisational Unit, this organisational Unit in our Database.');
+            return;
+        }
+        const savedOU = await OrganisationalUnit.create({
+            label: payload.label,
+            from: new Date(payload.from),
+            till: new Date(payload.till),
+            active: payload.active,
+            owner: payload.owner
+        });
+        res.status(201).json(savedOU);
+    } catch (error) {
+        console.log(error);
+        res.status(400).json('creating organisational Unit did not work!');
+    }
+});
+
+router.put('/:id', selectById, async (req, res) => {
+    let toUpdateOU = req.body;
+    //by default you can not iterate mongoose object -
+    let compareOU = JSON.parse(JSON.stringify(req.selectedOU));
+    //check all properties
+    if (Object.keys(compareOU[0]).length != Object.keys(toUpdateOU).length) {
+        res.status(400).json('number of properties in object not valid');
+        return;
+    }
+    if (Object.keys(toUpdateOU).some(k => { return compareOU[0][k] == undefined })) {
+        res.status(400).json('properties of object do not match');
+        return;
+    } else {
+        //update - now (use the original mongoose-object again)
+        for (let key in toUpdateOU) {
+            req.selectedOU[key] = toUpdateOU[key];
+        }
+        try {
+           
+            let success = checkValidate(toUpdateOU.owner);
+            if (success == false){
+                res.status(400).json('there is no userthis username in our Database.');
+                return;
+            }
+            const savedOU = await req.selectedOU[0].update({
+                label: toUpdateOU.label,
+                from: new Date(toUpdateOU.from),
+                till: new Date(toUpdateOU.till),
+                active: toUpdateOU.active,
+                owner: toUpdateOU.owner
+            });
+            res.status(200).json(savedOU);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json('something went wrong');
+        }
+    }
+});
+
+async function checkValidate( username, labelorganisationalUnit){
+    const users = await User.findAll({
+        where: {
+            username: username
+        }
+    });
+    if(users.length == 0 || users == undefined){
+        return false;
+    }
+    return true;
+}
