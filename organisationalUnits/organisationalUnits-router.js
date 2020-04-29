@@ -72,15 +72,15 @@ router.post('/', async (req, res) => {
         return;
     }
 
-    if (payload.label == undefined || payload.pupil-group-label == undefined || payload.subject-label == undefined || payload.notes == undefined
-        || payload.owner == undefined || payload.period-label == undefined) {
+    if (payload.label == undefined || payload.pupil_group_label == undefined || payload.subject_label == undefined || payload.notes == undefined
+        || payload.owner == undefined || payload.period_label == undefined) {
         res.status(400).json('period properties are not allowed to be undefined!');
         return;
     }
 
 
-    if (typeof (payload.label) != 'string' || typeof (payload.pupil-group-label) != 'string' || typeof (payload.subject-label) != 'string' 
-    || typeof (payload.notes) != 'string' || typeof(payload.owner) != 'string' || typeof(payload.period-label) != 'string'){
+    if (typeof (payload.label) != 'string' || typeof (payload.pupil_group_label) != 'string' || typeof (payload.subject_label) != 'string' 
+    || typeof (payload.notes) != 'string' || typeof(payload.owner) != 'string' || typeof(payload.period_label) != 'string'){
         res.status(400).json('not typeof string or boolean');
         return;
     }
@@ -93,10 +93,11 @@ router.post('/', async (req, res) => {
         }
         const savedOU = await OrganisationalUnit.create({
             label: payload.label,
-            from: new Date(payload.from),
-            till: new Date(payload.till),
-            active: payload.active,
-            owner: payload.owner
+            "pupil-group-label": payload.pupil_group_label,
+            "subject-label": payload.subject_label,
+            notes: payload.notes,
+            owner: payload.owner,
+            "period-level" : payload.period_label
         });
         res.status(201).json(savedOU);
     } catch (error) {
@@ -130,17 +131,26 @@ router.put('/:id', selectById, async (req, res) => {
                 return;
             }
             const savedOU = await req.selectedOU[0].update({
-                label: toUpdateOU.label,
-                from: new Date(toUpdateOU.from),
-                till: new Date(toUpdateOU.till),
-                active: toUpdateOU.active,
-                owner: toUpdateOU.owner
+                label: payload.label,
+                "pupil-group-label": payload.pupil_group_label,
+                "subject-label": payload.subject_label,
+                notes: payload.notes,
+                owner: payload.owner,
+                "period-level" : payload.period_label
             });
             res.status(200).json(savedOU);
         } catch (error) {
             console.log(error);
             res.status(500).json('something went wrong');
         }
+    }
+});
+router.delete('/:id', authenticate, selectById, async (req, res) => {
+    try {
+        const OU = req.selectedOU[0].destroy();
+        res.status(204).json('Organisational Unit was deleted successfully');
+    } catch (error) {
+        res.status(500).json('something went wrong!');
     }
 });
 
