@@ -8,7 +8,7 @@ const OrganisationalUnit = require('./organisationalUnit-model');
 
 async function selectById(req, res, next) {
     try {
-        let id = req.params.id
+        let id = req.params.id;
         const OU = await OrganisationalUnit.findAll({
             where: {
                 id: id
@@ -28,7 +28,7 @@ async function selectById(req, res, next) {
 
 async function selectByLabel(req, res, next) {
     try {
-        let label = req.params.label
+        let label = req.params.label;
         const OU = await OrganisationalUnit.findAll({
             where: {
                 label: label
@@ -63,7 +63,7 @@ router.get('/:id', selectById, async (req, res) => {
 router.get('/:label', selectByLabel, async (req, res) => {
     res.status(200).json(req.selectedOU);
 });
-module.exports = router;
+
 
 router.post('/', async (req, res) => {
     let payload = req.body;
@@ -86,18 +86,18 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        let success = checkValidate(payload.owner);
+        /*let success = checkValidate(payload.owner);
         if (success == false){
             res.status(400).json('there is no organisational Unit, this organisational Unit in our Database.');
             return;
-        }
+        }*/
         const savedOU = await OrganisationalUnit.create({
             label: payload.label,
             "pupil-group-label": payload.pupil_group_label,
             "subject-label": payload.subject_label,
             notes: payload.notes,
             owner: payload.owner,
-            "period-level" : payload.period_label
+            "period-label" : payload.period_label
         });
         res.status(201).json(savedOU);
     } catch (error) {
@@ -125,11 +125,11 @@ router.put('/:id', selectById, async (req, res) => {
         }
         try {
            
-            let success = checkValidate(toUpdateOU.owner);
+            /*let success = checkValidate(toUpdateOU.owner);
             if (success == false){
                 res.status(400).json('there is no userthis username in our Database.');
                 return;
-            }
+            }*/
             const savedOU = await req.selectedOU[0].update({
                 label: payload.label,
                 "pupil-group-label": payload.pupil_group_label,
@@ -145,7 +145,7 @@ router.put('/:id', selectById, async (req, res) => {
         }
     }
 });
-router.delete('/:id', authenticate, selectById, async (req, res) => {
+router.delete('/:id', selectById, async (req, res) => {
     try {
         const OU = req.selectedOU[0].destroy();
         res.status(204).json('Organisational Unit was deleted successfully');
@@ -165,3 +165,5 @@ async function checkValidate( username, labelorganisationalUnit){
     }
     return true;
 }
+
+module.exports = router;
