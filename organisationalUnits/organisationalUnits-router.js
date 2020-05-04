@@ -63,4 +63,5 @@ router.get('/:id', selectById, async (req, res) => {
 router.get('/:label', selectByLabel, async (req, res) => {
     res.status(200).json(req.selectedOU);
 });
+
 module.exports = router;

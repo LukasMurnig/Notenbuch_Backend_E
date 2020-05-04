@@ -91,7 +91,7 @@ router.post('/', async (req, res) => {
     try {
         let success = checkValidate(payload.owner);
         if (success == false){
-            res.status(400).json('there is no userthis username in our Database.');
+            res.status(400).json('there is no user with this username in our Database.');
             return;
         }
         const savedperiod = await Period.create({
