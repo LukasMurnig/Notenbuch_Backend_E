@@ -1,6 +1,6 @@
 'use strict'
 
-let selectionFields = 'id label from till active owner organisationalUnit';
+let selectionFields = 'label from till active owner organisationalUnit';
 const express = require('express');
 const router = express.Router();
 const Period = require('./../periods/period-model');
@@ -15,7 +15,7 @@ async function selectById(req, res, next) {
                 id: id
             }
         }, selectionFields);
-        if(period.length==0){
+        if (period.length == 0) {
             res.status(400).json('no period with this id!');
             return;
         }
@@ -34,7 +34,7 @@ async function selectByLabel(req, res, next) {
                 label: label
             }
         }, selectionFields);
-        if(period.length==0){
+        if (period.length == 0) {
             res.status(400).json('no period with this id!');
             return;
         }
@@ -46,6 +46,20 @@ async function selectByLabel(req, res, next) {
     next();
 }
 
+async function selectActivePeriod(req, res, next) {
+    try {
+        const period = await Period.findAll({
+            where: {
+                active: true
+            }
+        }, selectionFields);
+        req.selectActivePeriod = period;
+    } catch (error) {
+        console.log(error);
+        res.status(500).json('something went wrong');
+    }
+    next();
+}
 router.get('/', async (req, res) => {
     try {
         const periods = await Period.findAll({}, selectionFields);
@@ -63,6 +77,9 @@ router.get('/:label', selectByLabel, async (req, res) => {
     res.status(200).json(req.selectedperiod);
 });
 
+router.get('/getActivePeriod', selectActivePeriod, async (req, res) => {
+    res.status(200).json(req.selectedActivePeriod);
+});
 router.post('/', async (req, res) => {
     let payload = req.body;
     if (Object.keys(payload).length != 5) {
@@ -77,21 +94,35 @@ router.post('/', async (req, res) => {
     }
 
 
-    if (typeof (payload.label) != 'string' || typeof (payload.from) != 'string' || typeof (payload.till) != 'string' 
-    || typeof (payload.active) != 'boolean' || typeof(payload.owner) != 'string' ){
+    if (typeof (payload.label) != 'string' || typeof (payload.from) != 'string' || typeof (payload.till) != 'string'
+        || typeof (payload.active) != 'boolean' || typeof (payload.owner) != 'string') {
         res.status(400).json('not typeof string or boolean');
         return;
     }
-
-    if (new Date(payload.from) == "Invalid Date" || isNaN(new Date(payload.from)) ||
-        new Date(payload.till) == "Invalid Date" || isNaN(new Date(payload.till))) {
-        res.status(400).json('from or till are not valid for Date type');
-        return;
+    if (payload.active == true) {
+        const period = await Period.findAll({
+            where: {
+                active: payload.active
+            }
+        }, selectionFields);
+        if (period.length != 0 || period != undefined) {
+            res.status(400).json('Their is allready an active Period!');
+            return;
+        }
     }
     try {
-        let success = checkValidate(payload.owner);
-        if (success == false){
-            res.status(400).json('there is no user with this username in our Database.');
+        const users = await User.findAll({
+            where: {
+                username: payload.owner
+            }
+        });
+        if (users.length == 0 || users == undefined) {
+            res.status(400).json('Their is no user with this username!');
+            return;
+        }
+        if (new Date(payload.from) == "Invalid Date" || isNaN(new Date(payload.from)) ||
+            new Date(payload.till) == "Invalid Date" || isNaN(new Date(payload.till))) {
+            res.status(400).json('from or till are not valid for Date type');
             return;
         }
         const savedperiod = await Period.create({
@@ -126,14 +157,32 @@ router.put('/:id', selectById, async (req, res) => {
             req.selectedperiod[key] = toUpdateperiod[key];
         }
         try {
+            const users = await User.findAll({
+                where: {
+                    username: toUpdateperiod.owner
+                }
+            });
+            if (users.length == 0 || users == undefined) {
+                res.status(400).json('Their is no user with this username!');
+                return;
+            }
+            if (toUpdateperiod.active == true) {
+                const period = await Period.findAll({
+                    where: {
+                        active: toUpdateperiod.active
+                    }
+                }, selectionFields);
+                period[0].update({
+                    label: period.label,
+                    from: new Date(period.from),
+                    till: new Date(period.till),
+                    active: false,
+                    owner: period.owner
+                });
+            }
             if (new Date(toUpdateperiod.from) == "Invalid Date" || isNaN(new Date(toUpdateperiod.from)) ||
                 new Date(toUpdateperiod.till) == "Invalid Date" || isNaN(new Date(toUpdateperiod.till))) {
                 res.status(400).json('from or till are not valid for Date type');
-                return;
-            }
-            let success = checkValidate(toUpdateperiod.owner);
-            if (success == false){
-                res.status(400).json('there is no userthis username in our Database.');
                 return;
             }
             const savedperiod = await req.selectedperiod[0].update({
@@ -154,8 +203,13 @@ router.put('/:id', selectById, async (req, res) => {
 router.delete('/:id', selectById, async (req, res) => {
     try {
         const period = req.selectedperiod[0];
-        findAllOrganisationalUnitstoDestroy(req,res);
-        for(let indx=0;indx<req.selectedOU.length;indx++){
+        const OU = await OrganisationalUnit.findAll({
+            where: {
+                "period-label": req.selectedperiod[0].label
+            }
+        });
+        req.selectedOU = OU;
+        for (let indx = 0; indx < req.selectedOU.length; indx++) {
             req.selectedOU[indx].destroy();
         }
         req.selectedperiod[0].destroy();
@@ -165,29 +219,4 @@ router.delete('/:id', selectById, async (req, res) => {
     }
 });
 
-async function checkValidate( username, labelorganisationalUnit){
-    const users = await User.findAll({
-        where: {
-            username: username
-        }
-    });
-    if(users.length == 0 || users == undefined){
-        return false;
-    }
-    return true;
-}
-
-async function findAllOrganisationalUnitstoDestroy(req, res){
-    try{
-    const OU = await OrganisationalUnit.findAll({
-        where: {
-            "period-label": req.selectedperiod[0]
-        }
-    });
-    req.selectedOU = OU;
-    }catch(error){
-        console.log(error);
-        res.status(500).json('something went wrong');
-    }
-}
 module.exports = router;
