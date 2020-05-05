@@ -9,11 +9,11 @@ const OrganisationalUnit = sequelize.define('OrganisationalUnit', {
         primaryKey: true
     },
     label: { type: Sequelize.STRING, unique: true },
-    "pupil-group-label": { type: Sequelize.STRING },
-    "subject-label": { type: Sequelize.STRING },
+    "pupil_group_label": { type: Sequelize.STRING },
+    "subject_label": { type: Sequelize.STRING },
     notes: { type: Sequelize.STRING },
     owner: { type: Sequelize.STRING },
-    "period-label": {type: Sequelize.STRING},
+    "period_label": {type: Sequelize.STRING},
 }, {
     tableName: 'OrganisationalUnit',
     timestamps: false,

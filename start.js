@@ -53,7 +53,7 @@ function defaultSetup() {
     app.use('/api/user', userRouter);
     app.use('/api', loginRouter);
     app.use('/api/period', periodRouter);
-    app.use('/api/ou', ouRouter);
+    app.use('/api/organisationalUnit', ouRouter);
 
     app.listen(port, function () {
         console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`)

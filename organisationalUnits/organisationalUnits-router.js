@@ -1,11 +1,11 @@
 'use strict'
 
-let selectionFields = 'id label from till active owner organisationalUnit';
+let selectionFields = 'id label pupil_group_label subject_label notes owner period_label';
 const express = require('express');
 const router = express.Router();
 const Period = require('../periods/period-model');
 const OrganisationalUnit = require('./organisationalUnit-model');
-
+const User = require('./../users/user-model');
 async function selectById(req, res, next) {
     try {
         let id = req.params.id;
@@ -14,7 +14,7 @@ async function selectById(req, res, next) {
                 id: id
             }
         }, selectionFields);
-        if(OU.length==0){
+        if (OU.length == 0) {
             res.status(400).json('no OrganisationalUnit with this id!');
             return;
         }
@@ -34,7 +34,7 @@ async function selectByLabel(req, res, next) {
                 label: label
             }
         }, selectionFields);
-        if(OU.length==0){
+        if (OU.length == 0) {
             res.status(400).json('no OrganisationalUnit with this id!');
             return;
         }
@@ -79,8 +79,8 @@ router.post('/', async (req, res) => {
     }
 
 
-    if (typeof (payload.label) != 'string' || typeof (payload.pupil_group_label) != 'string' || typeof (payload.subject_label) != 'string' 
-    || typeof (payload.notes) != 'string' || typeof(payload.owner) != 'string' || typeof(payload.period_label) != 'string'){
+    if (typeof (payload.label) != 'string' || typeof (payload.pupil_group_label) != 'string' || typeof (payload.subject_label) != 'string'
+        || typeof (payload.notes) != 'string' || typeof (payload.owner) != 'string' || typeof (payload.period_label) != 'string') {
         res.status(400).json('not typeof string or boolean');
         return;
     }
@@ -88,21 +88,30 @@ router.post('/', async (req, res) => {
     try {
         const users = await User.findAll({
             where: {
-                username: payload.username
+                username: payload.owner
             }
         });
-        if(users.length == 0 || users == undefined){
+        if (users.length == 0 || users == undefined) {
             res.status(400).json('Their is no user with this username in Database');
             return;
         }
 
+        const period = await Period.findAll({
+            where: {
+                label: payload.period_label
+            }
+        });
+        if (period.length == 0 || period == undefined) {
+            res.status(400).json('Their is no Period with this label in Database');
+            return;
+        }
         const savedOU = await OrganisationalUnit.create({
             label: payload.label,
-            "pupil-group-label": payload.pupil_group_label,
-            "subject-label": payload.subject_label,
+            "pupil_group_label": payload.pupil_group_label,
+            "subject_label": payload.subject_label,
             notes: payload.notes,
             owner: payload.owner,
-            "period-label" : payload.period_label
+            "period_label": payload.period_label
         });
         res.status(201).json(savedOU);
     } catch (error) {
@@ -129,23 +138,30 @@ router.put('/:id', selectById, async (req, res) => {
             req.selectedOU[key] = toUpdateOU[key];
         }
         try {
-           
+
             const users = await User.findAll({
                 where: {
-                    username: toUpdateOU.username
+                    username: toUpdateOU.owner
                 }
             });
-            if(users.length == 0 || users == undefined){
+            if (users.length == 0 || users == undefined) {
                 res.status(400).json('Their is no user with this username in Database');
                 return;
             }
+            const period = await Period.findAll({
+                where: {
+                    label: toUpdateOU.period_label
+                }
+            });
+            if (period.length == 0 || period == undefined) {
+                res.status(400).json('Their is no Period with this label in Database');
+                return;
+            }
             const savedOU = await req.selectedOU[0].update({
-                label: payload.label,
-                "pupil-group-label": payload.pupil_group_label,
-                "subject-label": payload.subject_label,
-                notes: payload.notes,
-                owner: payload.owner,
-                "period-level" : payload.period_label
+                label: toUpdateOU.label,
+                "pupil_group_label": toUpdateOU.pupil_group_label,
+                "subject_label": toUpdateOU.subject_label,
+                notes: toUpdateOU.notes
             });
             res.status(200).json(savedOU);
         } catch (error) {
@@ -156,7 +172,7 @@ router.put('/:id', selectById, async (req, res) => {
 });
 router.delete('/:id', selectById, async (req, res) => {
     try {
-        const OU = req.selectedOU[0].destroy();
+        req.selectedOU[0].destroy();
         res.status(204).json('Organisational Unit was deleted successfully');
     } catch (error) {
         res.status(500).json('something went wrong!');
