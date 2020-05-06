@@ -64,20 +64,20 @@ router.get('/:id', selectById, async (req, res) => {
 
 router.post('/', async (req, res) => {
     let payload = req.body;
-    if (Object.keys(payload).length != 5) {
+    if (Object.keys(payload).length != 4) {
         res.status(400).json('Too much or less properties!');
         return;
     }
 
     if (payload.label == undefined || payload.from == undefined || payload.till == undefined || payload.active == undefined
-        || payload.owner == undefined) {
+        ) {
         res.status(400).json('period properties are not allowed to be undefined!');
         return;
     }
 
 
     if (typeof (payload.label) != 'string' || typeof (payload.from) != 'string' || typeof (payload.till) != 'string'
-        || typeof (payload.active) != 'boolean' || typeof (payload.owner) != 'string') {
+        || typeof (payload.active) != 'boolean') {
         res.status(400).json('not typeof string or boolean');
         return;
     }
@@ -112,7 +112,7 @@ router.post('/', async (req, res) => {
             from: new Date(payload.from),
             till: new Date(payload.till),
             active: payload.active,
-            owner: payload.owner
+            owner: req.username
         });
         res.status(201).json(savedperiod);
     } catch (error) {
@@ -122,7 +122,8 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', selectById, async (req, res) => {
-    let toUpdateperiod = req.body;
+    let toUpdateperiod = {"id": req.body.id, "label": req.body.label, "from": req.body.from, "till": req.body.till,
+    "active": req.body.active,"owner": req.username};
     //by default you can not iterate mongoose object -
     let compareperiod = JSON.parse(JSON.stringify(req.selectedperiod));
     //check all properties

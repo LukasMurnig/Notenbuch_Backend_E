@@ -44,7 +44,7 @@ router.post('/login', async (req, res, next) => {
         let temp = {
             "id": user[0].id,
             "username": user[0].username,
-            "expire": Date.now() + 300000
+            "expire": Date.now() + 3000000
         };
         let token = generateToken(JSON.stringify(temp));
         res.status(200).send({ 'token': token });
@@ -55,6 +55,29 @@ router.post('/login', async (req, res, next) => {
     }
 });
 
+router.use(function authenticate(req, res, next) {
+    let token = req.token;
+    if (token == undefined) {
+        res.status(401).send('you are not authorised');
+        return;
+    }
+    try{
+    let mykey = crypto.createDecipheriv(algorithm, key, iv);
+    var mystr = mykey.update(token, 'hex', 'utf8')
+    mystr += mykey.final('utf8');
+    var obj = JSON.parse(mystr);
+    if(obj.expire < Date.now()){
+        res.header('WWW-Authenticate','Basic realm="Access to SimpleChatApp Backend", charset="UTF-8"');
+        res.status(401).send('you are not authorised');
+        return;
+    }
+    }catch(error){
+        res.status(401).send('you are not authorised');
+        return;
+    }
+    req.username = obj.username;
+    next();
+});
 router.get('/whoamI', (req, res) => {
     res.status(200).send(req.user);
 })

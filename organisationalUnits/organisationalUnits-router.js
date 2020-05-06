@@ -110,7 +110,7 @@ router.post('/', async (req, res) => {
             "pupil_group_label": payload.pupil_group_label,
             "subject_label": payload.subject_label,
             notes: payload.notes,
-            owner: payload.owner,
+            owner: req.username,
             "period_label": payload.period_label
         });
         res.status(201).json(savedOU);
@@ -121,7 +121,8 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', selectById, async (req, res) => {
-    let toUpdateOU = req.body;
+    let toUpdateOU = {"id": req.body.id, "label": req.body.label, "pupil_group_label": payload.pupil_group_label, 
+    "subject_label": req.body.subject_label, "notes": req.body.notes, "owner": req.username, "period_label": payload.period_label};
     //by default you can not iterate mongoose object -
     let compareOU = JSON.parse(JSON.stringify(req.selectedOU));
     //check all properties
