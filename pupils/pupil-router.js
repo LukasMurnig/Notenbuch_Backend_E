@@ -56,6 +56,42 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.put('/:id', selectById, async (req, res) => {
+    let toUpdatepupil = {"id": req.body.id, "identifier": req.body.identifier, "birthdt": req.body.birthdt, "firstname": req.body.firstname,
+    "lastname": req.body.lastname,"notes": req.body.notes, "mail": req.body.mail};
+    //by default you can not iterate mongoose object -
+    let comparepupil = JSON.parse(JSON.stringify(req.selectedpupil));
+    //check all properties
+    if (Object.keys(comparepupil[0]).length != Object.keys(toUpdatepupil).length) {
+        res.status(400).json('number of properties in object not valid');
+        return;
+    }
+    if (Object.keys(toUpdatepupil).some(k => { return comparepupil[0][k] == undefined })) {
+        res.status(400).json('properties of object do not match');
+        return;
+    } else {
+        //update - now (use the original mongoose-object again)
+        for (let key in toUpdatepupil) {
+            req.selectedpupil[key] = toUpdatepupil[key];
+        }
+        try {
+            
+            const savedpupil = await req.selectedpupil[0].update({
+                identifier: toUpdatepupil.identifier,
+                birthdt: toUpdatepupil.birthdt,
+                firstname: toUpdatepupil.firstname,
+                lastname: toUpdatepupil.lastname,
+                notes: toUpdatepupil.notes,
+                mail: toUpdatepupil.mail
+            });
+            res.status(200).json(savedpupil);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json('something went wrong');
+        }
+    }
+});
+
 
 router.delete('/:id', selectById, async (req, res) => {
     try {
