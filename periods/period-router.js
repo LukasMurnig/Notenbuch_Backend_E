@@ -9,36 +9,39 @@ const OrganisationalUnit = require('./../organisationalUnits/organisationalUnit-
 
 async function selectById(req, res, next) {
     try {
-        let id = req.params.id
-        const period = await Period.findAll({
+        let value = req.params.id
+        var period;
+        if (isNaN(value)){
+            if (value == 'getActivePeriod'){
+                 period= await Period.findAll({
+                    where: {
+                        active: true
+                    }
+                }, selectionFields);
+            }else{
+                period = await Period.findAll({
+                    where: {
+                        label: label
+                    }
+                }, selectionFields);
+                if (period.length == 0) {
+                    res.status(400).json('no period with this id!');
+                    return;
+                }
+            }
+        }else{
+         period = await Period.findAll({
             where: {
-                id: id
+                id: value
             }
         }, selectionFields);
         if (period.length == 0) {
             res.status(400).json('no period with this id!');
             return;
         }
-        req.selectedperiod = period;
-    } catch (error) {
-        console.log(error);
-        res.status(500).json('something went wrong');
     }
-    next();
-}
-async function selectByLabel(req, res, next) {
-    try {
-        let label = req.params.label
-        const period = await Period.findAll({
-            where: {
-                label: label
-            }
-        }, selectionFields);
-        if (period.length == 0) {
-            res.status(400).json('no period with this id!');
-            return;
-        }
         req.selectedperiod = period;
+    
     } catch (error) {
         console.log(error);
         res.status(500).json('something went wrong');
@@ -46,20 +49,6 @@ async function selectByLabel(req, res, next) {
     next();
 }
 
-async function selectActivePeriod(req, res, next) {
-    try {
-        const period = await Period.findAll({
-            where: {
-                active: true
-            }
-        }, selectionFields);
-        req.selectActivePeriod = period;
-    } catch (error) {
-        console.log(error);
-        res.status(500).json('something went wrong');
-    }
-    next();
-}
 router.get('/', async (req, res) => {
     try {
         const periods = await Period.findAll({}, selectionFields);
@@ -73,13 +62,6 @@ router.get('/:id', selectById, async (req, res) => {
     res.status(200).json(req.selectedperiod);
 });
 
-router.get('/:label', selectByLabel, async (req, res) => {
-    res.status(200).json(req.selectedperiod);
-});
-
-router.get('/getActivePeriod', selectActivePeriod, async (req, res) => {
-    res.status(200).json(req.selectedActivePeriod);
-});
 router.post('/', async (req, res) => {
     let payload = req.body;
     if (Object.keys(payload).length != 5) {

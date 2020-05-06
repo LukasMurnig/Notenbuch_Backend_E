@@ -105,7 +105,6 @@ router.post('/', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(400).json('creating user did not work!'+error);
-        res.status(400).json('creating user did not work!');
     }
 });
 
