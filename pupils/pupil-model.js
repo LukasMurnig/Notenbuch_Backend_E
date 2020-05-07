@@ -2,7 +2,7 @@
 
 const Sequelize = require('sequelize');
 const sequelize = require('../start').sequelize;
-const Pupil = sequelize.define('period', {
+const Pupil = sequelize.define('Pupil', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -10,8 +10,8 @@ const Pupil = sequelize.define('period', {
     },
     identifier: { type: Sequelize.STRING, unique: true },
     birthdt: { type: Sequelize.DATE },
-    firstname: { type: Sequelize.STRING, unique: true },
-    lastname: { type: Sequelize.STRING, unique: true },
+    firstname: { type: Sequelize.STRING },
+    lastname: { type: Sequelize.STRING },
     notes: {type: Sequelize.STRING},
     mail: { type: Sequelize.STRING, unique: true },
 }, {

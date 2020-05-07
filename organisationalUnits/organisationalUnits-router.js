@@ -67,20 +67,20 @@ router.get('/:label', selectByLabel, async (req, res) => {
 
 router.post('/', async (req, res) => {
     let payload = req.body;
-    if (Object.keys(payload).length != 6) {
+    if (Object.keys(payload).length != 5) {
         res.status(400).json('Too much or less properties!');
         return;
     }
 
     if (payload.label == undefined || payload.pupil_group_label == undefined || payload.subject_label == undefined || payload.notes == undefined
-        || payload.owner == undefined || payload.period_label == undefined) {
+         || payload.period_label == undefined) {
         res.status(400).json('period properties are not allowed to be undefined!');
         return;
     }
 
 
     if (typeof (payload.label) != 'string' || typeof (payload.pupil_group_label) != 'string' || typeof (payload.subject_label) != 'string'
-        || typeof (payload.notes) != 'string' || typeof (payload.owner) != 'string' || typeof (payload.period_label) != 'string') {
+        || typeof (payload.notes) != 'string' || typeof (payload.period_label) != 'string') {
         res.status(400).json('not typeof string or boolean');
         return;
     }
@@ -88,7 +88,7 @@ router.post('/', async (req, res) => {
     try {
         const users = await User.findAll({
             where: {
-                username: payload.owner
+                username: req.username
             }
         });
         if (users.length == 0 || users == undefined) {
@@ -121,8 +121,8 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', selectById, async (req, res) => {
-    let toUpdateOU = {"id": req.body.id, "label": req.body.label, "pupil_group_label": payload.pupil_group_label, 
-    "subject_label": req.body.subject_label, "notes": req.body.notes, "owner": req.username, "period_label": payload.period_label};
+    let toUpdateOU = {"id": req.body.id, "label": req.body.label, "pupil_group_label": req.body.pupil_group_label, 
+    "subject_label": req.body.subject_label, "notes": req.body.notes, "owner": req.username, "period_label": req.body.period_label};
     //by default you can not iterate mongoose object -
     let compareOU = JSON.parse(JSON.stringify(req.selectedOU));
     //check all properties

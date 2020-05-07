@@ -47,6 +47,7 @@ function defaultSetup() {
     const loginRouter = require('./login/login-router');
     const periodRouter = require('./periods/period-router');
     const ouRouter = require('./organisationalUnits/organisationalUnits-router');
+    const pupilRouter = require('./pupils/pupil-router');
     app.use(bodyParser.json());
     app.use(bearerToken());
     app.use(cors());
@@ -54,6 +55,7 @@ function defaultSetup() {
     app.use('/api', loginRouter);
     app.use('/api/period', periodRouter);
     app.use('/api/organisationalUnit', ouRouter);
+    app.use('/api/pupil', pupilRouter);
 
     app.listen(port, function () {
         console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`)
