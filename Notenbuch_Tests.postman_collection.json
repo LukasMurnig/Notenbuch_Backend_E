@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "e75cadc2-be35-4d6e-889c-53b89745a04a",
+		"name": "Notenbuch_Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t'firstname':'Max',\n\t'lastname': 'Mustermann',\n    'username': ''MaxM'',\n    'password': 'Max123',\n    'email': 'Max@email.com'\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://notenbuch.htl-vil/api/user",
+					"protocol": "http",
+					"host": [
+						"notenbuch",
+						"htl-vil"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b73d090f-06d1-4b7c-ab84-e9085873e05e",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    postman.setGlobalVariable(\"token\", jsonData.token)",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"MaxM\",\n\t\"password\": \"Max123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8840/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8840",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "authenificate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b73d090f-06d1-4b7c-ab84-e9085873e05e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    postman.setGlobalVariable(\"token\", jsonData.json)",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"token\": \"{{token}}\",\n\t\"user\": \"SirKarl\"\n}"
+				},
+				"url": {
+					"raw": "{{backend}}{{usersEndpoint}}/secret",
+					"host": [
+						"{{backend}}{{usersEndpoint}}"
+					],
+					"path": [
+						"secret"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSingleUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9abdf230-9a85-4d20-bb53-a50c1142469f",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    postman.setGlobalVariable(\"token\", jsonData.token)",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "pm.sendRequest({\n    url: pm.variables.get(\"backend\") + pm.variables.get(\"usersEndpoint\"),\n    method: 'POST',\n    header: 'content-type:application/json',\n    body: {\n        mode: 'raw',\n        raw: JSON.stringify ({\n            \"firstname\": \"Andrea\",\n            \"lastname\": \"Mustermann\",\n            \"username\" : \"AndiM\",\n            \"password\": \"i do not know\",\n            \"email\": \"andim@email.com\"\n        })\n    }\n}, \nfunction (err, res) {\n    console.log(res);\n    var generatedUserID = res.json()._id;\n    postman.setGlobalVariable(\"generatedUserID\", generatedUserID);\n    console.log(generatedUserID);\n});"
+				},
+				"url": {
+					"raw": "http://localhost:8840/api/user/{{userid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8840",
+					"path": [
+						"api",
+						"user",
+						"{{userid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
