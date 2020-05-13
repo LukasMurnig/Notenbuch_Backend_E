@@ -3,6 +3,7 @@
 let selectionFields = 'label from till active owner organisationalUnit';
 const express = require('express');
 const router = express.Router();
+const deleteRouter = express.Router();
 const Period = require('./../periods/period-model');
 const User = require('./../users/user-model');
 const OrganisationalUnit = require('./../organisationalUnits/organisationalUnit-model');
@@ -201,5 +202,19 @@ router.delete('/:id', selectById, async (req, res) => {
         res.status(400).json('something went wrong!');
     }
 });
+deleteRouter.delete('/deleteAll', async (req, res) => {
+    try {
+            const data = await Period.findAll({});
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                console.log(data[i]);
+                await data[i].destroy();
+            }
+            res.status(204).json('allPeriodsdeleted!');
+    } catch (error) {
+        res.status(500).json('something went wrong!');
+    }
+});
 
 module.exports = router;
+module.exports.deleteAllPeriod = deleteRouter;

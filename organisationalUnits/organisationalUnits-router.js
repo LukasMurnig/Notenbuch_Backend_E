@@ -3,6 +3,7 @@
 let selectionFields = 'id label pupil_group_label subject_label notes owner period_label';
 const express = require('express');
 const router = express.Router();
+const deleteRouter = express.Router();
 const Period = require('../periods/period-model');
 const OrganisationalUnit = require('./organisationalUnit-model');
 const User = require('./../users/user-model');
@@ -180,5 +181,19 @@ router.delete('/:id', selectById, async (req, res) => {
     }
 });
 
+deleteRouter.delete('/deleteAll', async (req, res) => {
+    try {
+            const data = await OrganisationalUnit.findAll({});
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                console.log(data[i]);
+                await data[i].destroy();
+            }
+            res.status(204).json('allOrganisationalUnitsdeleted!');
+    } catch (error) {
+        res.status(500).json('something went wrong!');
+    }
+});
 
 module.exports = router;
+module.exports.deleteAllOU = deleteRouter;

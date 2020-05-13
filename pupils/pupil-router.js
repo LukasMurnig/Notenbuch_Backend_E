@@ -3,9 +3,9 @@
 let selectionFields = 'id label pupil_group_label subject_label notes owner pupil_label';
 const express = require('express');
 const router = express.Router();
+const deleteRouter = express.Router();
 const Pupil = require('../pupils/pupil-model');
 const OrganisationalUnit = require('../organisationalUnits/organisationalUnit-model');
-
 async function selectById(req, res, next) {
     try {
         let id = req.params.id;
@@ -123,4 +123,19 @@ router.delete('/:id', selectById, async (req, res) => {
     }
 });
 
+deleteRouter.delete('/deleteAll', async (req, res) => {
+    try {
+            const data = await Pupil.findAll({});
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                console.log(data[i]);
+                await data[i].destroy();
+            }
+            res.status(204).json('allPupilsdeleted!');
+    } catch (error) {
+        res.status(500).json('something went wrong!');
+    }
+});
+
 module.exports = router;
+module.exports.deleteAllPupil = deleteRouter;

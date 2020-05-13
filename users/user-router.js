@@ -4,6 +4,7 @@ let selectionFields = 'id firstname lastname username password email';
 const express = require('express');
 const crypto = require('crypto');
 const router = express.Router();
+const deleteRouter = express.Router();
 const User = require('./../users/user-model');
 const Sequelize = require('sequelize');
 const serverPk = require('../certs/serverSecret').PrivateKey;
@@ -21,7 +22,7 @@ async function selectById(req, res, next) {
                 id: id
             }
         }, selectionFields);
-            req.selectedUser = user;
+        req.selectedUser = user;
     } catch (error) {
         console.log(error);
         res.status(500).send('something went wrong');
@@ -37,14 +38,14 @@ async function selectByUsername(req, res, next) {
                 username: username
             }
         }, selectionFields);
-            req.selectedUser = user;
+        req.selectedUser = user;
     } catch (error) {
         console.log(error);
         res.status(500).send('something went wrong');
     }
     next();
 }
-router.get('/', authenticate, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const users = await User.findAll({}, selectionFields);
         res.status(200).json(users);
@@ -60,6 +61,7 @@ router.get('/:id', authenticate, selectById, async (req, res) => {
 router.get('/:username', authenticate, selectByUsername, async (req, res) => {
     res.status(200).json(req.selectedUser);
 });
+
 router.post('/', async (req, res) => {
     let payload = req.body;
     if (Object.keys(payload).length != 5) {
@@ -75,7 +77,7 @@ router.post('/', async (req, res) => {
 
 
     if (typeof (payload.firstname) != 'string' || typeof (payload.lastname) != 'string' ||
-        typeof (payload.username) != 'string' || typeof (payload.password) != 'string' || typeof(payload.email) != 'string') {
+        typeof (payload.username) != 'string' || typeof (payload.password) != 'string' || typeof (payload.email) != 'string') {
         res.status(400).json('not typeof string');
         return;
     }
@@ -104,7 +106,7 @@ router.post('/', async (req, res) => {
         res.status(201).json(savedUser);
     } catch (error) {
         console.error(error);
-        res.status(400).json('creating user did not work!'+error);
+        res.status(400).json('creating user did not work!' + error);
     }
 });
 
@@ -135,7 +137,7 @@ router.post('/changePassword', async (req, res) => {
                 password: payload.oldPassword
             })
         }, selectionFields);
-        if (user.length != 1){
+        if (user.length != 1) {
             res.status(404).json('No user with these credential are found!');
             return;
         }
@@ -152,7 +154,7 @@ router.post('/changePassword', async (req, res) => {
 router.put('/:id', selectById, async (req, res) => {
     let toUpdateUser = req.body;
     //by default you can not iterate mongoose object -
-    if(req.selectedUser.length == 0){
+    if (req.selectedUser.length == 0) {
         res.status(400).json('no user with this id!');
         return;
     }
@@ -161,7 +163,7 @@ router.put('/:id', selectById, async (req, res) => {
     if (Object.keys(compareUser[0]).length != Object.keys(toUpdateUser).length) {
         res.status(400).send('number of properties in object not valid');
         return;
-    } 
+    }
     if (Object.keys(toUpdateUser).some(k => { return compareUser[0][k] == undefined })) {
         res.status(400).send('properties of object do not match');
         return;
@@ -221,4 +223,19 @@ router.delete('/:id', authenticate, selectById, async (req, res) => {
         res.status(500).json('something went wrong!');
     }
 });
+
+deleteRouter.delete('/deleteAll', async (req, res) => {
+    try {
+            const data = await User.findAll({});
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                console.log(data[i]);
+                await data[i].destroy();
+            }
+            res.status(204).json('allUserdeleted!');
+    } catch (error) {
+        res.status(500).json('something went wrong!');
+    }
+});
 module.exports = router;
+module.exports.deleteAllUser = deleteRouter;

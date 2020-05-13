@@ -55,7 +55,7 @@ router.post('/login', async (req, res, next) => {
     }
 });
 
-router.use(function authenticate(req, res, next) {
+function authenticate(req, res, next) {
     let token = req.token;
     if (token == undefined) {
         res.status(401).send('you are not authorised');
@@ -77,7 +77,7 @@ router.use(function authenticate(req, res, next) {
     }
     req.username = obj.username;
     next();
-});
+}
 router.get('/whoamI', (req, res) => {
     res.status(200).send(req.user);
 })
@@ -90,4 +90,5 @@ function generateToken(userstring) {
     return token;
 }
 
-module.exports = router;
+module.exports.router = router;
+module.exports.authenticate = authenticate;
