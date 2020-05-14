@@ -7,36 +7,25 @@ const deleteRouter = express.Router();
 const Period = require('../periods/period-model');
 const OrganisationalUnit = require('./organisationalUnit-model');
 const User = require('./../users/user-model');
-async function selectById(req, res, next) {
+async function selectBy(req, res, next) {
     try {
         let id = req.params.id;
-        const OU = await OrganisationalUnit.findAll({
+        var OU;
+        if(isNaN(id)){
+            OU = await OrganisationalUnit.findAll({
+                where: {
+                    label: id
+                }
+            }, selectionFields);
+        }else{
+        OU = await OrganisationalUnit.findAll({
             where: {
                 id: id
             }
         }, selectionFields);
-        if (OU.length == 0) {
-            res.status(400).json('no OrganisationalUnit with this id!');
-            return;
         }
-        req.selectedOU = OU;
-    } catch (error) {
-        console.log(error);
-        res.status(500).json('something went wrong');
-    }
-    next();
-}
-
-async function selectByLabel(req, res, next) {
-    try {
-        let label = req.params.label;
-        const OU = await OrganisationalUnit.findAll({
-            where: {
-                label: label
-            }
-        }, selectionFields);
         if (OU.length == 0) {
-            res.status(400).json('no OrganisationalUnit with this id!');
+            res.status(400).json('no OrganisationalUnit with this id or label!');
             return;
         }
         req.selectedOU = OU;
@@ -57,13 +46,10 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', selectById, async (req, res) => {
+router.get('/:id', selectBy, async (req, res) => {
     res.status(200).json(req.selectedOU);
 });
 
-router.get('/:label', selectByLabel, async (req, res) => {
-    res.status(200).json(req.selectedOU);
-});
 
 
 router.post('/', async (req, res) => {
@@ -87,16 +73,6 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const users = await User.findAll({
-            where: {
-                username: req.username
-            }
-        });
-        if (users.length == 0 || users == undefined) {
-            res.status(400).json('Their is no user with this username in Database');
-            return;
-        }
-
         const period = await Period.findAll({
             where: {
                 label: payload.period_label
@@ -121,7 +97,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', selectById, async (req, res) => {
+router.put('/:id', selectBy, async (req, res) => {
     let toUpdateOU = {"id": req.body.id, "label": req.body.label, "pupil_group_label": req.body.pupil_group_label, 
     "subject_label": req.body.subject_label, "notes": req.body.notes, "owner": req.username, "period_label": req.body.period_label};
     //by default you can not iterate mongoose object -
@@ -140,16 +116,6 @@ router.put('/:id', selectById, async (req, res) => {
             req.selectedOU[key] = toUpdateOU[key];
         }
         try {
-
-            const users = await User.findAll({
-                where: {
-                    username: toUpdateOU.owner
-                }
-            });
-            if (users.length == 0 || users == undefined) {
-                res.status(400).json('Their is no user with this username in Database');
-                return;
-            }
             const period = await Period.findAll({
                 where: {
                     label: toUpdateOU.period_label
@@ -172,7 +138,7 @@ router.put('/:id', selectById, async (req, res) => {
         }
     }
 });
-router.delete('/:id', selectById, async (req, res) => {
+router.delete('/:id', selectBy, async (req, res) => {
     try {
         req.selectedOU[0].destroy();
         res.status(204).json('Organisational Unit was deleted successfully');

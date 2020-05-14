@@ -6,16 +6,25 @@ const router = express.Router();
 const deleteRouter = express.Router();
 const Pupil = require('../pupils/pupil-model');
 const OrganisationalUnit = require('../organisationalUnits/organisationalUnit-model');
-async function selectById(req, res, next) {
+async function selectBy(req, res, next) {
     try {
         let id = req.params.id;
-        const pupil = await Pupil.findAll({
+        var pupil;
+        if(isNaN(id)){
+            pupil = await Pupil.findAll({
+                where: {
+                    identifier: id
+                }
+            }, selectionFields);
+        }else{
+        pupil = await Pupil.findAll({
             where: {
                 id: id
             }
         }, selectionFields);
+        }
         if (pupil.length == 0) {
-            res.status(400).json('no pupil with this id!');
+            res.status(400).json('no pupil with this id or identifier!');
             return;
         }
         req.selectedPupil = pupil;
@@ -36,25 +45,25 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', selectById, async (req, res) => {
+router.get('/:id', selectBy, async (req, res) => {
     res.status(200).json(req.selectedPupil);
 });
 
 router.post('/', async (req, res) => {
     let payload = req.body;
-    if (Object.keys(payload).length != 7) {
+    if (Object.keys(payload).length != 6) {
         res.status(400).json('Too much or less properties!');
         return;
     }
 
-    if (payload.id == undefined ||payload.identifier == undefined || payload.birthdt == undefined || payload.firstname == undefined || payload.lastname == undefined
+    if (payload.identifier == undefined || payload.birthdt == undefined || payload.firstname == undefined || payload.lastname == undefined
         || payload.notes == undefined || payload.mail == undefined) {
         res.status(400).json('pupil properties are not allowed to be undefined!');
         return;
     }
 
 
-    if (typeof (payload.id) != 'string' ||typeof (payload.identifier) != 'string' || typeof (payload.birthdt) != 'string' || typeof (payload.firstname) != 'string'
+    if (typeof (payload.identifier) != 'string' || typeof (payload.birthdt) != 'string' || typeof (payload.firstname) != 'string'
         || typeof (payload.lastname) != 'string' || typeof (payload.notes) != 'string' || typeof (payload.mail) != 'string') {
         res.status(400).json('not typeof string or boolean');
         return;
@@ -77,7 +86,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', selectById, async (req, res) => {
+router.put('/:id', selectBy, async (req, res) => {
     let toUpdatepupil = {"id": req.body.id, "identifier": req.body.identifier, "birthdt": req.body.birthdt, "firstname": req.body.firstname,
     "lastname": req.body.lastname,"notes": req.body.notes, "mail": req.body.mail};
     //by default you can not iterate mongoose object -
@@ -114,7 +123,7 @@ router.put('/:id', selectById, async (req, res) => {
 });
 
 
-router.delete('/:id', selectById, async (req, res) => {
+router.delete('/:id', selectBy, async (req, res) => {
     try {
         req.selectedPupil[0].destroy();
         res.status(204).json('pupil was deleted successfully');

@@ -8,41 +8,37 @@ const Period = require('./../periods/period-model');
 const User = require('./../users/user-model');
 const OrganisationalUnit = require('./../organisationalUnits/organisationalUnit-model');
 
-async function selectById(req, res, next) {
+async function selectBy(req, res, next) {
     try {
         let value = req.params.id
         var period;
-        if (isNaN(value)){
-            if (value == 'getActivePeriod'){
-                 period= await Period.findAll({
+        if (isNaN(value)) {
+            if (value == 'getActivePeriod') {
+                period = await Period.findAll({
                     where: {
                         active: true
                     }
                 }, selectionFields);
-            }else{
+            } else {
                 period = await Period.findAll({
                     where: {
                         label: label
                     }
                 }, selectionFields);
-                if (period.length == 0) {
-                    res.status(400).json('no period with this id!');
-                    return;
+            }
+        } else {
+            period = await Period.findAll({
+                where: {
+                    id: value
                 }
-            }
-        }else{
-         period = await Period.findAll({
-            where: {
-                id: value
-            }
-        }, selectionFields);
+            }, selectionFields);
+        }
         if (period.length == 0) {
-            res.status(400).json('no period with this id!');
+            res.status(400).json('no period with this id or label!');
             return;
         }
-    }
         req.selectedperiod = period;
-    
+
     } catch (error) {
         console.log(error);
         res.status(500).json('something went wrong');
@@ -59,7 +55,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', selectById, async (req, res) => {
+router.get('/:id', selectBy, async (req, res) => {
     res.status(200).json(req.selectedperiod);
 });
 
@@ -71,7 +67,7 @@ router.post('/', async (req, res) => {
     }
 
     if (payload.label == undefined || payload.from == undefined || payload.till == undefined || payload.active == undefined
-        ) {
+    ) {
         res.status(400).json('period properties are not allowed to be undefined!');
         return;
     }
@@ -122,9 +118,11 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', selectById, async (req, res) => {
-    let toUpdateperiod = {"id": req.body.id, "label": req.body.label, "from": req.body.from, "till": req.body.till,
-    "active": req.body.active,"owner": req.username};
+router.put('/:id', selectBy, async (req, res) => {
+    let toUpdateperiod = {
+        "id": req.body.id, "label": req.body.label, "from": req.body.from, "till": req.body.till,
+        "active": req.body.active, "owner": req.username
+    };
     //by default you can not iterate mongoose object -
     let compareperiod = JSON.parse(JSON.stringify(req.selectedperiod));
     //check all properties
@@ -184,7 +182,7 @@ router.put('/:id', selectById, async (req, res) => {
     }
 });
 
-router.delete('/:id', selectById, async (req, res) => {
+router.delete('/:id', selectBy, async (req, res) => {
     try {
         const period = req.selectedperiod[0];
         const OU = await OrganisationalUnit.findAll({
@@ -204,13 +202,13 @@ router.delete('/:id', selectById, async (req, res) => {
 });
 deleteRouter.delete('/deleteAll', async (req, res) => {
     try {
-            const data = await Period.findAll({});
-            console.log(data);
-            for (let i = 0; i < data.length; i++) {
-                console.log(data[i]);
-                await data[i].destroy();
-            }
-            res.status(204).json('allPeriodsdeleted!');
+        const data = await Period.findAll({});
+        console.log(data);
+        for (let i = 0; i < data.length; i++) {
+            console.log(data[i]);
+            await data[i].destroy();
+        }
+        res.status(204).json('allPeriodsdeleted!');
     } catch (error) {
         res.status(500).json('something went wrong!');
     }

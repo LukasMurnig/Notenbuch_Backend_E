@@ -40,6 +40,7 @@ function defaultSetup() {
 
     const bodyParser = require('body-parser');
     const userRouter = require('./users/user-router');
+    const userCreateRouter = require('./users/user-router').createUser;
     const deleteUserRouter = require('./users/user-router').deleteAllUser;
     const deletePeriodRouter = require('./periods/period-router').deleteAllPeriod;
     const deleteAllOURouter = require('./organisationalUnits/organisationalUnits-router').deleteAllOU;
@@ -56,9 +57,10 @@ function defaultSetup() {
     app.use('/api/period',deletePeriodRouter);
     app.use('/api/organisationalUnit',deleteAllOURouter);
     app.use('/api/pupil',deleteAllPupilRouter);
+    app.use('/api/user',userCreateRouter)
+    app.use('/api',loginRouter);
+    app.use(authenticate);
     app.use('/api/user', userRouter);
-    //app.use('/api',loginRouter);
-    //app.use(authenticate);
     app.use('/api/period', periodRouter);
     app.use('/api/organisationalUnit', ouRouter);
     app.use('/api/pupil', pupilRouter);
