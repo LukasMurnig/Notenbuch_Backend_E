@@ -6,6 +6,7 @@ const router = express.Router();
 const deleteRouter = express.Router();
 const Period = require('./../periods/period-model');
 const User = require('./../users/user-model');
+const Sequelize = require('sequelize');
 const OrganisationalUnit = require('./../organisationalUnits/organisationalUnit-model');
 
 async function selectBy(req, res, next) {
@@ -22,7 +23,7 @@ async function selectBy(req, res, next) {
             } else {
                 period = await Period.findAll({
                     where: {
-                        label: label
+                        label: value
                     }
                 }, selectionFields);
             }
@@ -84,21 +85,12 @@ router.post('/', async (req, res) => {
                 active: payload.active
             }
         }, selectionFields);
-        if (period.length != 0 || period != undefined) {
+        if (period.length != 0 || period == undefined) {
             res.status(400).json('Their is allready an active Period!');
             return;
         }
     }
     try {
-        const users = await User.findAll({
-            where: {
-                username: payload.owner
-            }
-        });
-        if (users.length == 0 || users == undefined) {
-            res.status(400).json('Their is no user with this username!');
-            return;
-        }
         if (new Date(payload.from) == "Invalid Date" || isNaN(new Date(payload.from)) ||
             new Date(payload.till) == "Invalid Date" || isNaN(new Date(payload.till))) {
             res.status(400).json('from or till are not valid for Date type');
@@ -111,7 +103,13 @@ router.post('/', async (req, res) => {
             active: payload.active,
             owner: req.username
         });
-        res.status(201).json(savedperiod);
+        const periodtoSend = await Period.findAll({
+            where: Sequelize.and({
+                label: payload.label,
+                owner: req.username
+            })
+        });
+        res.status(201).json(periodtoSend);
     } catch (error) {
         console.log(error);
         res.status(400).json('creating period did not work!');
@@ -119,35 +117,33 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', selectBy, async (req, res) => {
+    let payload = req.body;
+    let length = Object.keys(payload).length +2;
     let toUpdateperiod = {
-        "id": req.body.id, "label": req.body.label, "from": req.body.from, "till": req.body.till,
+        "id": req.params.id, "label": req.body.label, "from": req.body.from, "till": req.body.till,
         "active": req.body.active, "owner": req.username
     };
     //by default you can not iterate mongoose object -
     let compareperiod = JSON.parse(JSON.stringify(req.selectedperiod));
     //check all properties
-    if (Object.keys(compareperiod[0]).length != Object.keys(toUpdateperiod).length) {
+    if (length!= Object.keys(req.selectedperiod[0]).length) {
         res.status(400).json('number of properties in object not valid');
         return;
     }
-    if (Object.keys(toUpdateperiod).some(k => { return compareperiod[0][k] == undefined })) {
+    if (Object.keys(payload).some(k => { return compareperiod[0][k] == undefined })) {
         res.status(400).json('properties of object do not match');
         return;
     } else {
+        if (toUpdateperiod.id == undefined || toUpdateperiod.label == undefined || toUpdateperiod.from == undefined ||
+            toUpdateperiod.till == undefined || toUpdateperiod.active == undefined){
+                res.status(400).json('properties are not allowed to be undefined');
+                return;
+            }
         //update - now (use the original mongoose-object again)
         for (let key in toUpdateperiod) {
             req.selectedperiod[key] = toUpdateperiod[key];
         }
         try {
-            const users = await User.findAll({
-                where: {
-                    username: toUpdateperiod.owner
-                }
-            });
-            if (users.length == 0 || users == undefined) {
-                res.status(400).json('Their is no user with this username!');
-                return;
-            }
             if (toUpdateperiod.active == true) {
                 const period = await Period.findAll({
                     where: {
@@ -187,7 +183,7 @@ router.delete('/:id', selectBy, async (req, res) => {
         const period = req.selectedperiod[0];
         const OU = await OrganisationalUnit.findAll({
             where: {
-                "period-label": req.selectedperiod[0].label
+                "period_label": req.selectedperiod[0].label
             }
         });
         req.selectedOU = OU;

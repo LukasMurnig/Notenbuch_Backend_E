@@ -1,0 +1,8 @@
+Einführung für das Starten des Notenbuch-Backend.
+1) Nehmen sie einen Editor Ihrer Wahl (Visual Studio Code empfohlen) und stellen sie alle notwendigen Sachen für Git bereit.
+2) Pullen sie Alle Sachen von GitHub.
+3) Installieren Sie Node falls Sie es noch installiert haben. Sie können ihre aktuelle node version im Terminal mit node -v checken.
+4) Um alle Funktionen der Applikationen benutzen zu können müssen Sie npm install express, body-parser, Sequelize, cors, express-bearer-token, crypto, newman einzeln Ausführen.
+5) Nun können sie das backend in dem sie auf das Playsymbol mit dem Käfer klicken und dort ganz oben neben Run auf den Playbutton klicken.
+6) Damit sie die Testcases sofort ausführen können müssen sie nur newman run .\Notenbuch_Tests.postman_collection.json in das Terminal tippen, falls die Collection umbenannt wurde müssten sie nach .\ den neuen Namen verwenden.
+7) Alle Testcases sollten erfolgreich durchlaufen.

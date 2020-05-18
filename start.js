@@ -2,7 +2,6 @@
 const hostname = 'localhost';
 const port = process.env.PORT || 8840;
 const express = require('express');
-var fs = require("fs");
 const app = express();
 const bearerToken = require('express-bearer-token');
 const cors = require('cors');
@@ -57,10 +56,10 @@ function defaultSetup() {
     app.use('/api/period',deletePeriodRouter);
     app.use('/api/organisationalUnit',deleteAllOURouter);
     app.use('/api/pupil',deleteAllPupilRouter);
-    app.use('/api/user',userCreateRouter)
+    app.use('/api/user',userCreateRouter);
+    app.use('/api/user', userRouter);
     app.use('/api',loginRouter);
     app.use(authenticate);
-    app.use('/api/user', userRouter);
     app.use('/api/period', periodRouter);
     app.use('/api/organisationalUnit', ouRouter);
     app.use('/api/pupil', pupilRouter);

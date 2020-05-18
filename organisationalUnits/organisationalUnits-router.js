@@ -7,6 +7,7 @@ const deleteRouter = express.Router();
 const Period = require('../periods/period-model');
 const OrganisationalUnit = require('./organisationalUnit-model');
 const User = require('./../users/user-model');
+const Sequelize = require('sequelize');
 async function selectBy(req, res, next) {
     try {
         let id = req.params.id;
@@ -90,7 +91,14 @@ router.post('/', async (req, res) => {
             owner: req.username,
             "period_label": payload.period_label
         });
-        res.status(201).json(savedOU);
+        const outoSend = await OrganisationalUnit.findAll({
+            where: Sequelize.and({
+                label: payload.label,
+                owner: req.username,
+                "period_label": payload.period_label
+            })
+        });
+        res.status(201).json(outoSend);
     } catch (error) {
         console.log(error);
         res.status(400).json('creating organisational Unit did not work!');
@@ -98,19 +106,26 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', selectBy, async (req, res) => {
-    let toUpdateOU = {"id": req.body.id, "label": req.body.label, "pupil_group_label": req.body.pupil_group_label, 
+    let payload = req.body;
+    let length = Object.keys(payload).length +2;
+    let toUpdateOU = {"id": req.params.id, "label": req.body.label, "pupil_group_label": req.body.pupil_group_label, 
     "subject_label": req.body.subject_label, "notes": req.body.notes, "owner": req.username, "period_label": req.body.period_label};
     //by default you can not iterate mongoose object -
     let compareOU = JSON.parse(JSON.stringify(req.selectedOU));
     //check all properties
-    if (Object.keys(compareOU[0]).length != Object.keys(toUpdateOU).length) {
+    if (Object.keys(compareOU[0]).length != length) {
         res.status(400).json('number of properties in object not valid');
         return;
     }
-    if (Object.keys(toUpdateOU).some(k => { return compareOU[0][k] == undefined })) {
+    if (Object.keys(payload).some(k => { return compareOU[0][k] == undefined })) {
         res.status(400).json('properties of object do not match');
         return;
     } else {
+        if (toUpdateOU.id == undefined || toUpdateOU.label == undefined || toUpdateOU.pupil_group_label == undefined || 
+            toUpdateOU.subject_label == undefined || toUpdateOU.notes == undefined || toUpdateOU.period_label == undefined){
+                res.status(400).json('properties does not allowed to be undefined ');
+                return;
+            }
         //update - now (use the original mongoose-object again)
         for (let key in toUpdateOU) {
             req.selectedOU[key] = toUpdateOU[key];

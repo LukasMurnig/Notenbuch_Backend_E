@@ -6,6 +6,7 @@ const router = express.Router();
 const deleteRouter = express.Router();
 const Pupil = require('../pupils/pupil-model');
 const OrganisationalUnit = require('../organisationalUnits/organisationalUnit-model');
+const Sequelize = require('sequelize');
 async function selectBy(req, res, next) {
     try {
         let id = req.params.id;
@@ -69,6 +70,11 @@ router.post('/', async (req, res) => {
         return;
     }
 
+    if (new Date(payload.birthdt) == "Invalid Date" || isNaN(new Date(payload.birthdt))){
+        res.status(400).json('birthdt are not valid for Date type');
+            return;
+    }
+
     try {
         
         const savedPupil = await Pupil.create({
@@ -79,27 +85,40 @@ router.post('/', async (req, res) => {
             notes: payload.notes,
             mail: payload.mail
         });
-        res.status(201).json(savedPupil);
+        const pupiltoSend = await Pupil.findAll({
+            where: Sequelize.and({
+                identifier: payload.identifier,
+                mail: payload.mail
+            })
+        });
+        res.status(201).json(pupiltoSend);
     } catch (error) {
         console.log(error);
-        res.status(400).json('creating organisational Unit did not work!');
+        res.status(400).json('creating Pupil did not work!');
     }
 });
 
 router.put('/:id', selectBy, async (req, res) => {
-    let toUpdatepupil = {"id": req.body.id, "identifier": req.body.identifier, "birthdt": req.body.birthdt, "firstname": req.body.firstname,
+    let payload = req.body;
+    let length = Object.keys(payload).length +1;
+    let toUpdatepupil = {"id": req.params.id, "identifier": req.body.identifier, "birthdt": req.body.birthdt, "firstname": req.body.firstname,
     "lastname": req.body.lastname,"notes": req.body.notes, "mail": req.body.mail};
     //by default you can not iterate mongoose object -
     let comparepupil = JSON.parse(JSON.stringify(req.selectedPupil));
     //check all properties
-    if (Object.keys(comparepupil[0]).length != Object.keys(toUpdatepupil).length) {
+    if (Object.keys(comparepupil[0]).length != length) {
         res.status(400).json('number of properties in object not valid');
         return;
     }
-    if (Object.keys(toUpdatepupil).some(k => { return comparepupil[0][k] == undefined })) {
+    if (Object.keys(payload).some(k => { return comparepupil[0][k] == undefined })) {
         res.status(400).json('properties of object do not match');
         return;
     } else {
+        if (toUpdatepupil.id == undefined || toUpdatepupil.identifier == undefined || toUpdatepupil.birthdt == undefined ||
+            toUpdatepupil.firstname == undefined || toUpdatepupil.lastname == undefined || toUpdatepupil.notes == undefined || toUpdatepupil.mail == undefined){
+                res.status(400).json('properties are do not allowed to be undefined');
+                return;
+            }
         //update - now (use the original mongoose-object again)
         for (let key in toUpdatepupil) {
             req.selectedPupil[key] = toUpdatepupil[key];
@@ -135,9 +154,7 @@ router.delete('/:id', selectBy, async (req, res) => {
 deleteRouter.delete('/deleteAll', async (req, res) => {
     try {
             const data = await Pupil.findAll({});
-            console.log(data);
             for (let i = 0; i < data.length; i++) {
-                console.log(data[i]);
                 await data[i].destroy();
             }
             res.status(204).json('allPupilsdeleted!');

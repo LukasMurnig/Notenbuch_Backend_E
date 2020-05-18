@@ -98,7 +98,12 @@ createRouter.post('/', async (req, res) => {
             password: payload.password,
             email: payload.email
         }, selectionFields);
-        res.status(201).json(savedUser);
+        const userSendToClient = await User.findAll({
+            where: {
+                username: usernameDatenbank
+            }
+        }, selectionFields);
+        res.status(201).json(userSendToClient);
     } catch (error) {
         console.error(error);
         res.status(400).json('creating user did not work!' + error);
@@ -168,10 +173,8 @@ createRouter.put('/:id', selectBy, async (req, res) => {
             req.selectedUser[key] = toUpdateUser[key];
         }
         try {
-            if (req.selectedUser.password != undefined) {
-                let key = crypto.createHash('sha256').update(req.selectedUser.password).digest('base64');
-                req.selectedUser.password = key;
-            }
+            let password = crypto.createHash('sha256').update(toUpdateUser.password).digest('base64');
+            toUpdateUser.password = password;
             const savedUser = await req.selectedUser[0].update({
                 firstname: toUpdateUser.firstname,
                 lastname: toUpdateUser.lastname,
@@ -198,9 +201,7 @@ router.delete('/:id', selectBy, async (req, res) => {
 deleteRouter.delete('/deleteAll', async (req, res) => {
     try {
             const data = await User.findAll({});
-            console.log(data);
             for (let i = 0; i < data.length; i++) {
-                console.log(data[i]);
                 await data[i].destroy();
             }
             res.status(204).json('allUserdeleted!');

@@ -44,7 +44,7 @@ router.post('/login', async (req, res, next) => {
         let temp = {
             "id": user[0].id,
             "username": user[0].username,
-            "expire": Date.now() + 3000000
+            "expire": Date.now() + 6000000
         };
         let token = generateToken(JSON.stringify(temp));
         res.status(200).send({ 'token': token });
@@ -78,7 +78,7 @@ function authenticate(req, res, next) {
     req.username = obj.username;
     next();
 }
-router.get('/whoamI', (req, res) => {
+router.get('/whoamI', authenticate, (req, res) => {
     res.status(200).send(req.user);
 })
 function generateToken(userstring) {
