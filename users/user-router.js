@@ -98,7 +98,7 @@ createRouter.post('/', async (req, res) => {
             password: payload.password,
             email: payload.email
         }, selectionFields);
-        const userSendToClient = await User.findAll({
+        const userSendToClient = await User.findOne({
             where: {
                 username: usernameDatenbank
             }
