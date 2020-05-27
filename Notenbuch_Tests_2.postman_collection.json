@@ -1,0 +1,4712 @@
+{
+	"info": {
+		"_postman_id": "6b851271-4397-4039-bf98-8bf443abecad",
+		"name": "Notenbuch_Tests copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "DeleteAll",
+			"item": [
+				{
+					"name": "AllUsers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f38e92f4-8170-4e53-af3b-36117f3fd82f",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"   pm.response.to.have.status(204); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{user}}{{deleteAll}}",
+							"host": [
+								"{{backend}}{{user}}{{deleteAll}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AllPeriods",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "90b87f35-1a77-45b2-bd91-c09ac8c58a30",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"   pm.response.to.have.status(204); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}{{deleteAll}}",
+							"host": [
+								"{{backend}}{{period}}{{deleteAll}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AllOrganisationalUnits",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6255014a-0128-4727-9b00-85fb392cc6d2",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"   pm.response.to.have.status(204); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}{{deleteAll}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}{{deleteAll}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AllPupils",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f4d51a8d-da76-43d9-90a9-94d2d04df9f7",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"   pm.response.to.have.status(204); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{pupil}}{{deleteAll}}",
+							"host": [
+								"{{backend}}{{pupil}}{{deleteAll}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Create/Update User",
+			"item": [
+				{
+					"name": "createUser(wrong content-type)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c20b94b8-bc94-4e0e-b88f-330418036d07",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\t  \"id\" : 1,\n      \"firstname\": \"Stefanie\",\n      \"lastname\": \"Dabringer\",\n      \"username\": \"Dabse\",\n      \"password\": \"dasdassdas\","
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}",
+							"host": [
+								"{{backend}}{{user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser(less properties) ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "25a61194-3019-4515-a413-01a0e4a1dee0",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t  \"id\" : 1,\n      \"firstname\": \"Stefanie\",\n      \"username\": \"Dabse\",\n      \"password\": \"dasdassdas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}",
+							"host": [
+								"{{backend}}{{user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser(much properties) ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7fa5dec-48cb-4972-8ec8-0d80ece9fe4e",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t  \"id\" : 1,\n      \"firstname\": \"Stefanie\",\n      \"lastname\": \"Dabringer\",\n      \"username\": \"Dabse\",\n      \"password\": \"dasdassdas\",\n      \"admin\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}",
+							"host": [
+								"{{backend}}{{user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser(wrong type properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "482aacad-4d27-4a96-9200-e2960ba4059b",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"firstname\": \"Stefanie\",\n      \"lastname\": \"Dabringer\",\n      \"username\": \"Dabse\",\n      \"password\": \"dasdassdas\",\n      \"email\": 123\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}",
+							"host": [
+								"{{backend}}{{user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser(success)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a8e1a3e8-8e74-49fe-8176-f2e24615a335",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"   var jsonData = pm.response.json();",
+									"   postman.setGlobalVariable(\"userId\", jsonData[0].id);",
+									"   pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"firstname\": \"Stefanie\",\n      \"lastname\": \"Dabringer\",\n      \"username\": \"Dabse\",\n      \"password\": \"dasdassdas\",\n      \"email\": \"dabringer@htl-villach.at\"\n}\n      ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}",
+							"host": [
+								"{{backend}}{{user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createUser(user allready exist)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bd8e63e7-fb91-4a73-a51a-9b1270d49b6c",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"firstname\": \"Stefanie\",\n      \"lastname\": \"Dabringer\",\n      \"username\": \"Dabse\",\n      \"password\": \"dasdassdas\",\n      \"email\": \"dabringer@htl-villach.at\"\n}\n      ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}",
+							"host": [
+								"{{backend}}{{user}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword(wrong number properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "646ef433-04d2-469d-a696-77bb70b7f92f",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{user}}{{password}}",
+							"host": [
+								"{{backend}}{{user}}{{password}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword(wrong properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6e66e5b6-31be-417b-b42f-bb47f05f7a7e",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firstname\": \"Dabse\",\n\t\"lastname\": \"Dabringer\",\n\t\"oldPassword\": \"dasdassdas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}{{password}}",
+							"host": [
+								"{{backend}}{{user}}{{password}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword(wrong type of properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2f0ca2e1-782c-47ce-8ab4-430f18f35202",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"firstname\": \"Dabse\",\n\t\"oldPassword\": \"dasdassdas\",\n\t\"newPassword\": 123\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}{{password}}",
+							"host": [
+								"{{backend}}{{user}}{{password}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword(wrong credentials) ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ca0de973-8587-47de-80b2-b88d421d16f6",
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"   pm.response.to.have.status(404); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Dabse\",\n\t\"oldPassword\": \"dasdasdas\",\n\t\"newPassword\": \"Dasdassdas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}{{password}}",
+							"host": [
+								"{{backend}}{{user}}{{password}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "175b856f-fe43-4bc1-9359-023a4a92bb76",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Dabse\",\n\t\"oldPassword\": \"dasdassdas\",\n\t\"newPassword\": \"Dasdassdas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}{{password}}",
+							"host": [
+								"{{backend}}{{user}}{{password}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User (wrong id)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\": \"hello\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}/2",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User (wrong number properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "096e1044-32f3-4ee9-a0ef-720b75fd2bbe",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"firstname\": \"Stefanie\",\n      \"lastname\": \"Dabringer\",\n      \"username\": \"Dabse\"\n}\n      ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}/{{userId}}",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User (wrong properties) ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cfe9f671-3b3b-41a0-aac5-9ae37a6b0355",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"firstname\": \"Stefanie\",\n      \"lastname\": \"Dabringer\",\n      \"username\": \"Dabse\",\n      \"admin\": true\n}\n      ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}/{{userId}}",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User (successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74b7c0a4-0925-483d-8fe8-8c4fe1649f11",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\t  \n\t  \"id\": {{userId}},\n      \"firstname\": \"Stefanie\",\n      \"lastname\": \"Dabringer\",\n      \"username\": \"Dabse\",\n      \"password\": \"dasdassdas\",\n       \"email\": \"dabringer@htl-villach.at\"\n}\n      ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{user}}/{{userId}}",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "cb4653fc-5f06-427e-b6a9-6ec8af1eefad",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d6c4704c-6cf8-4f7a-b905-3d64fdc558ae",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login(wrong number properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "afd7a2bf-5a2b-446b-adf2-607554620b66",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"   pm.response.to.have.status(401); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"Dabse\",\n\t\"password\":\"dasdassdas\",\n\t\"admin\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{login}}",
+							"host": [
+								"{{backend}}{{login}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login(wrong properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2696a42e-e57f-46e2-a117-51ca35a741d4",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"   pm.response.to.have.status(401); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"Dabse\",\n\t\"admin\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{login}}",
+							"host": [
+								"{{backend}}{{login}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login(type of properties wrong) ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "da66daa6-f4bf-4952-93d3-e7dbc1fc6b40",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"   pm.response.to.have.status(401); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"Dabse\",\n\t\"password\": 123\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{login}}",
+							"host": [
+								"{{backend}}{{login}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login(user not in Database)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "372be815-7d09-473c-96f9-110e84c95697",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"   pm.response.to.have.status(401); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"Achim\",\n\t\"password\":\"dasdassdas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{login}}",
+							"host": [
+								"{{backend}}{{login}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login(succesful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fa59648b-9447-43ae-934a-d07d09aa2cee",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    postman.setGlobalVariable(\"token\", jsonData.token);",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"Dabse\",\n    \"password\": \"dasdassdas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{login}}",
+							"host": [
+								"{{backend}}{{login}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authentification(no token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "62a8dc8f-9e05-448a-b738-adb2d19a23fc",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"   pm.response.to.have.status(401); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/whoamI",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"whoamI"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authentification(token is invalid)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6ad71b83-eb67-4275-a37e-926e298f6ee8",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"   pm.response.to.have.status(401); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "123",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/whoamI",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"whoamI"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authentification(succesful whoamI) ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "99f6534a-c718-45e6-826f-8128f7a07c03",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}/whoamI",
+							"host": [
+								"{{backend}}"
+							],
+							"path": [
+								"whoamI"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get/Delete User",
+			"item": [
+				{
+					"name": "allUsers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "23937b93-9c92-45e2-b99c-4a084e598ce9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://notenbuch.htl-vil:8840/api/user",
+							"protocol": "http",
+							"host": [
+								"notenbuch",
+								"htl-vil"
+							],
+							"port": "8840",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserById (wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "173a4956-f8cb-458a-991b-a042a77b4e9a",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{user}}/-2",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "690abb5b-9eb8-4df0-bfdb-142e75fd9ca4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{user}}/{{userId}}",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserByUsername",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b5c48ee8-b240-4746-b264-725965471370",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{user}}/Dabse",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"Dabse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserByUsername (wrong username)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dae0311a-7fc3-4469-ab00-076cce32f4c6",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{user}}/ü",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"ü"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User (successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8731e679-26e0-45dc-b017-969cf72068f5",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"   pm.response.to.have.status(204); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{user}}/{{userId}}",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User (user allready deleted)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27216518-3d5b-4e5a-aef7-7a1ce6f47445",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{user}}/{{userId}}",
+							"host": [
+								"{{backend}}{{user}}"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Period",
+			"item": [
+				{
+					"name": "AllPeriods",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "de51232c-3aa2-41e6-9d24-357ef8de5017",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(wrong number properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a6b62322-ed6f-4aca-8da8-fad99198a5ec",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2019/20\",\n\t\"from\":\"12.September.2019\",\n\t\"till\":\"10.Juli.2020\",\n\t\"active\": true,\n\t\"admin\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(wrong properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ad2af1a4-bbf6-4c92-ac29-bb575f992f40",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2019/20\",\n\t\"from\":\"12.September.2019\",\n\t\"till\":\"10.Juli.2020\",\n\t\"admin\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(wrong type of properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "45f0a12a-1a40-46e8-bd2d-4b113f6ca9a0",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2019/20\",\n\t\"from\":\"12.September.2019\",\n\t\"till\":\"10.Juli.2020\",\n\t\"active\": \"true\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(wrong type till or from properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e72226bc-07db-494d-b4ca-1b4aa4c1fe41",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2019/20\",\n\t\"from\":\"78.September.2019\",\n\t\"till\":\"10.Juli.2020\",\n\t\"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d2bedb35-39cc-4e86-acc0-9848b65ef02e",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"   var jsonData = pm.response.json();",
+									"   postman.setGlobalVariable(\"periodId\", jsonData[0].id);",
+									"   pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2020-21\",\n\t\"from\":\"09 12 2020\",\n\t\"till\":\"07 10 2020\",\n\t\"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(successful 2.0)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8c8b6f91-f687-4833-9592-85cf54c8fd2c",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"   var jsonData = pm.response.json();",
+									"   postman.setGlobalVariable(\"perioddeleteId\", jsonData[0].id);",
+									"   pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2019-20\",\n\t\"from\":\"09 12 2020\",\n\t\"till\":\"07 10 2020\",\n\t\"active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(already exist)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "72115a71-60ad-4d72-93d4-29437d7b3082",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2020/21\",\n\t\"from\":\"09 12 2020\",\n\t\"till\":\"07 10 2020\",\n\t\"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(there is already an active period)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f7a8ef8e-2c1a-46a2-8f33-af53d1f4dbc2",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2020/21\",\n\t\"from\":\"09 12 2020\",\n\t\"till\":\"07 10 2020\",\n\t\"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "onePeriodByID (wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7cb31321-8830-4f31-a8d1-4ec521bfb8c2",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}/-2",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "onePeriodByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "214edee9-8250-4da6-b87a-606513fb5939",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}/{{periodId}}",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"{{periodId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "onePeriodByLabel (wrong label)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "21fd6e2e-e53c-4c1a-8b68-1df87713bd2a",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}/klu",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"klu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "onePeriodByLabel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5fb3cdf7-03cd-4cc6-9130-3dcc080415a4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}/Schuljahr2020-21",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"Schuljahr2020-21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivePeriod",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "833131b2-19b8-41ae-9626-9e1a0b44a776",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}/getActivePeriod",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"getActivePeriod"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allPeriod",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c876e6bb-3a8e-46c2-a672-290440bdf187",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}",
+							"host": [
+								"{{backend}}{{period}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "653e9b1a-66d6-4136-917f-02ba801815dd",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}/-2",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(wrong number properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6411bf74-0729-413a-9a1c-e42d7257a795",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2019/20\",\n\t\"from\":\"09 12 2020\",\n\t\"till\":\"07 10 2020\",\n\t\"active\": false,\n\t\"test\":\"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}/{{periodId}}",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"{{periodId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(wrong properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dc759cf3-8a01-48ae-95a6-0905dc13a3d5",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2019/20\",\n\t\"from\":\"09 12 2020\",\n\t\"till\":\"07 10 2020\",\n\t\"test\":\"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}/{{periodId}}",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"{{periodId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(wrong type till or from properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d77516ee-5723-4f17-8c5f-8a4b439dd3f7",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2019/20\",\n\t\"from\":\"09 September 2020\",\n\t\"till\":\"07.ads0.2020\",\n\t\"active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}/{{periodId}}",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"{{periodId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "63876099-f3ae-4446-ad1b-cce52850d0d9",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\":\"Schuljahr2020-22\",\n\t\"from\":\"09 12 2020\",\n\t\"till\":\"07 10 2020\",\n\t\"active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{period}}/{{periodId}}",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"{{periodId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e7345aaf-ffc4-4d5f-9354-153f13c6e109",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}/-1",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e2a2de63-132c-44dc-95dc-ef6d57dd426d",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"   pm.response.to.have.status(204); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}/{{perioddeleteId}}",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"{{perioddeleteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "period(already deleted)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eb5e8b42-5922-4789-bf11-eff35a352753",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}/{{perioddeleteId}}",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"{{perioddeleteId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "OrganisationalUnit",
+			"item": [
+				{
+					"name": "createOrganisationalUnit(less-much Properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0b45e491-926b-47c5-b40a-69e23dea7b25",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createOrganisationalUnit(wrong Type Properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "07018b08-b8e2-4d0a-a704-ce404632564a",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period_label\": 123\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createOrganisationalUnit(wrong Properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "70542343-4360-4cbc-82f6-a643e52c3fc0",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period\": \"Schuljahr2019/20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createOrganisationalUnit(no Period with this label)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9697ac14-11c3-461f-b6f3-e497bfd43062",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period_label\": \"20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createOrganisationalUnit(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9d5c10a2-2e32-4a7c-a435-fc8498f8d1d3",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"   var jsonData = pm.response.json();",
+									"   postman.setGlobalVariable(\"ouId\", jsonData[0].id);",
+									"   pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period_label\": \"Schuljahr2020-22\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createOrganisationalUnit(allready exists)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f1399898-7286-4642-85dd-b5be282249a5",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period_label\": \"Schuljahr2019/20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllOrganisationalUnits",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17db5043-27e6-4a60-b0a2-38c12106bf50",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrganisationalUnitById (wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "40115ce0-55aa-4a8c-ad86-03613471ae0a",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/-2",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrganisationalUnitById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c5f14272-46b5-49ce-952d-119a44cdab94",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/{{ouId}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"{{ouId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrganisationalUnitByLabel (wrong Label)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d024e01d-82bf-43fa-89ba-ff099fe2c493",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/4AHIF",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"4AHIF"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getOrganisationalUnitByLabel",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84a37d4e-82a5-4fdd-9c5f-0719c78ab143",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/POS 4AHIF",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"POS 4AHIF"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrganisationalUnit(wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "55b24b71-4c0a-433a-8a70-d5429ccda2ca",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period_label\": \"Schuljahr2019/20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/-2",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrganisationalUnit(wrong number properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "df4d906c-eeb3-4c5e-ab0e-be2746a21429",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period_label\": \"Schuljahr2019/20\",\n\t\"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/{{ouId}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"{{ouId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrganisationalUnit(wrong properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "41aced18-2022-4d32-a95b-3083d88dfa45",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/{{ouId}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"{{ouId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrganisationalUnit(no Period with this label)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e54a6d6e-5e46-4d5e-96ee-dbcd63d8721a",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period_label\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/{{ouId}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"{{ouId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrganisationalUnit(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d6f4e74c-2f13-4004-950a-bd702415a773",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period_label\": \"Schuljahr2020-22\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/{{ouId}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"{{ouId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrganisationalUnit(wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74220034-b579-45c0-9fae-f54cf73793fd",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/-2",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrganisationalUnit(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "abea20d7-cde1-488c-b41c-3899f52cd424",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"   pm.response.to.have.status(204); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/{{ouId}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"{{ouId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrganisationalUnit(already deleted)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3863f2c9-da1e-43f2-8ea5-5139778ac35c",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/{{ouId}}",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"{{ouId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Pupil",
+			"item": [
+				{
+					"name": "createPupil(wrong number Properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e0a9ea7-b541-42a0-942c-965814577342",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"identifier\": \"murnigl\",\n\t\"birthdt\": \"04.10.2001\",\n\t\"firstname\": \"Lukas\",\n\t\"lastname\": \"Murnig\",\n\t\"notes\": \"Hello I am Lukas Murnig\",\n\t\"mail\": \"lukas.murnig@gmail.com\",\n\t\"school\": \"HTL-Villach\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{pupil}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPupil(wrong Properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "65863b33-7915-4881-8f54-41e2c2da0181",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"identifier\": \"murnigl\",\n\t\"birthdt\": \"04.10.2001\",\n\t\"firstname\": \"Lukas\",\n\t\"lastname\": \"Murnig\",\n\t\"notes\": \"Hello I am Lukas Murnig\",\n\t\"school\": \"HTL-Villach\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{pupil}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPupil(wrong Type Properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "33a6adf2-32bc-4d63-b1de-221f520fdf8d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"identifier\": \"murnigl\",\n\t\"birthdt\": 2001,\n\t\"firstname\": \"Lukas\",\n\t\"lastname\": \"Murnig\",\n\t\"notes\": \"Hello I am Lukas Murnig\",\n\t\"mail\": \"lukas.murnig@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{pupil}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPupil(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ee48202a-7fcb-4dd5-b39d-bec6258c8729",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"   var jsonData = pm.response.json();",
+									"   postman.setGlobalVariable(\"pupilId\", jsonData[0].id);",
+									"   pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"identifier\": \"murnigl\",\n\t\"birthdt\": \"04 10 2001\",\n\t\"firstname\": \"Lukas\",\n\t\"lastname\": \"Murnig\",\n\t\"notes\": \"Hello I am Lukas Murnig\",\n\t\"mail\": \"lukas.murnig@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{pupil}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createPupil(allready exists)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8c4b01f7-f6c6-40c8-8c91-615bf1f98d79",
+								"exec": [
+									"pm.test(\"Status code is 400\",function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"identifier\": \"murnigl\",\n\t\"birthdt\": \"04.10.2001\",\n\t\"firstname\": \"Lukas\",\n\t\"lastname\": \"Murnig\",\n\t\"notes\": \"Hello I am Lukas Murnig\",\n\t\"mail\": \"lukas.murnig@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{pupil}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AllPupil",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9446dd7a-826c-44b1-8c68-7499323d8d87",
+								"exec": [
+									"pm.test(\"Status code is 200\",function () {",
+									"   pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{pupil}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PupilById (wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "71cb7ad4-42f7-4c79-b8bb-ebef44732789",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{pupil}}/-2",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PupilById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "009de05a-cf92-498f-9c9c-f262c0161f7b",
+								"exec": [
+									"pm.test(\"Status code is 200\",function () {",
+									"   pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{pupil}}/{{pupilId}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"{{pupilId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PupilByIdentifier (wrong Identifier)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b4b5c663-ab8f-4188-8096-7a19168f655e",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{pupil}}/l",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"l"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PupilByIdentifier",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e1ffaf9b-73a5-4382-8dd9-849facfddc35",
+								"exec": [
+									"pm.test(\"Status code is 200\",function () {",
+									"   pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{pupil}}/murnigl",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"murnigl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pupil (wrong id)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{period}}/-2",
+							"host": [
+								"{{backend}}{{period}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pupil (wrong number properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1863745f-494a-4792-813e-dafde001fe7a",
+								"exec": [
+									"pm.test(\"Status code is 400\",function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"identifier\": \"murnigl\",\n\t\"birthdt\": \"04.10.2001\",\n\t\"firstname\": \"Lukas\",\n\t\"lastname\": \"Murnig\",\n\t\"notes\": \"Hello I am Lukas Murnig\",\n\t\"mail\": \"lukas.murnig@gmail.com\",\n\t\"School\": \"HTL-Villach\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{pupil}}/{{pupilId}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"{{pupilId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pupil (wrong properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "41ff2418-465d-4099-96c0-37eb4b5ad1ce",
+								"exec": [
+									"pm.test(\"Status code is 400\",function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"identifier\": \"murnigl\",\n\t\"birthdt\": \"04.10.2001\",\n\t\"firstname\": \"Lukas\",\n\t\"lastname\": \"Murnig\",\n\t\"notes\": \"Hello I am Lukas Murnig\",\n\t\"School\": \"HTL-Villach\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{pupil}}/{{pupilId}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"{{pupilId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pupil (successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e8390fd1-ae66-4539-ac44-4f21215f317b",
+								"exec": [
+									"pm.test(\"Status code is 200\",function () {",
+									"   pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"identifier\": \"murnigl\",\n\t\"birthdt\": \"04.10.2001\",\n\t\"firstname\": \"Lukas\",\n\t\"lastname\": \"Murnig\",\n\t\"notes\": \"Hello I am Lukas Murnig from the HTL-Villach!\",\n\t\"mail\": \"lukas.murnig@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{pupil}}/{{pupilId}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"{{pupilId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pupil(wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bf3da1c2-2c59-4b73-8ef2-f644d26a33f2",
+								"exec": [
+									"pm.test(\"Status code is 400\",function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{pupil}}/-2",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pupil(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "312f542d-1b36-47cf-a04f-636c17df8c75",
+								"exec": [
+									"pm.test(\"Status code is 204\",function () {",
+									"   pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{pupil}}/{{pupilId}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"{{pupilId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pupil(already deleted)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "12bfe989-f7e7-42af-a4fe-cfc591e14cde",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{pupil}}/{{pupilId}}",
+							"host": [
+								"{{backend}}{{pupil}}"
+							],
+							"path": [
+								"{{pupilId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Record",
+			"item": [
+				{
+					"name": "createRecord(less-much Properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6477c37-496f-4d34-b1c3-954913f195c4",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": \"my Value\",\n\t\"date\": \"22.05.2020\",\n\t\"modified\": \"27.05.2020\",\n\t\"comment\": \"this is a comment\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{record}}",
+							"host": [
+								"{{backend}}{{record}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createRecord(wrong Type Properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "36723553-156f-4890-87d4-4fa9afdfd0f5",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": \"my Value\",\n\t\"date\": \"22.05.2020\",\n\t\"created\": 55,\n\t\"modified\": \"27.05.2020\",\n\t\"comment\": \"this is a comment\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{record}}",
+							"host": [
+								"{{backend}}{{record}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createRecord(wrong Properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0523bb7c-72a2-4c24-a7d9-f976614ce67f",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": \"my Value\",\n\t\"date\": \"22.05.2020\",\n\t\"creation\": \"05.01.2020\",\n\t\"modified\": \"27.05.2020\",\n\t\"comment\": \"this is a comment\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{record}}",
+							"host": [
+								"{{backend}}{{record}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createRecord(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "283269fd-edba-4f34-9357-ca6d213735fa",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"   var jsonData = pm.response.json();",
+									"   postman.setGlobalVariable(\"recId\", jsonData[0].id);",
+									"   pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": \"my Value\",\n\t\"date\": \"22.05.2020\",\n\t\"created\": \"05.01.2020\",\n\t\"modified\": \"27.05.2020\",\n\t\"comment\": \"this is a comment\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{record}}",
+							"host": [
+								"{{backend}}{{record}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createRecord(allready exists)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4222be2c-7668-4ef5-b101-e41291dd6d90",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"POS 4AHIF\",\n\t\"pupil_group_label\": \"4AHIF\",\n\t\"subject_label\": \"POS\",\n\t\"notes\": \"In our school we program a lot.\",\n\t\"period_label\": \"Schuljahr2019/20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{record}}",
+							"host": [
+								"{{backend}}{{record}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllRecords",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7069b3c-4120-400b-9516-dc9e9c95da7b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{record}}",
+							"host": [
+								"{{backend}}{{record}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRecordById (wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cb88a548-f681-454b-9787-4788ddfcf1bc",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{organisationalUnit}}/-2",
+							"host": [
+								"{{backend}}{{organisationalUnit}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRecordById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "51c05521-b3e9-49b4-a730-5975363029df",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{record}}/{{recId}}",
+							"host": [
+								"{{backend}}{{record}}"
+							],
+							"path": [
+								"{{recId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record(wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4085b217-280c-4d4c-a8ad-29697cc05bf7",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": \"my Value\",\n\t\"date\": \"22.05.2020\",\n\t\"created\": \"05.01.2020\",\n\t\"modified\": \"28.05.2020\",\n\t\"comment\": \"this is a comment too\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{record}}/-2",
+							"host": [
+								"{{backend}}{{record}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record(wrong number properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7be2252c-48f2-4171-ac84-136fa6e55c72",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": \"my Value\",\n\t\"date\": \"22.05.2020\",\n\t\"created\": \"05.01.2020\",\n\t\"modified\": \"28.05.2020\",\n\t\"comment\": \"this is a comment too\"\n\t\"active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{record}}/{{recId}}",
+							"host": [
+								"{{backend}}{{record}}"
+							],
+							"path": [
+								"{{recId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record(wrong properties)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "80d68f8a-5928-4bbc-a07a-6b195f765910",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": \"my Value\",\n\t\"date\": \"22.05.2020\",\n\t\"creation\": \"05.01.2020\",\n\t\"modified\": \"28.05.2020\",\n\t\"comment\": \"this is a comment too\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{record}}/{{ouId}}",
+							"host": [
+								"{{backend}}{{record}}"
+							],
+							"path": [
+								"{{ouId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48fa26ff-d01e-4b0f-bcd3-15ab499c5a71",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"   pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"value\": \"my Value\",\n\t\"date\": \"22.05.2020\",\n\t\"created\": \"05.01.2020\",\n\t\"modified\": \"28.05.2020\",\n\t\"comment\": \"this is a comment too\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{backend}}{{record}}/{{recId}}",
+							"host": [
+								"{{backend}}{{record}}"
+							],
+							"path": [
+								"{{recId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record(wrong id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eae1078a-4f28-4404-8aa2-86fac9ade507",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{record}}/-2",
+							"host": [
+								"{{backend}}{{record}}"
+							],
+							"path": [
+								"-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record(successful)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d93a4dd8-f8af-42af-8470-3a8b5f0b1fd1",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"   pm.response.to.have.status(204); ",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{record}}/{{recId}}",
+							"host": [
+								"{{backend}}{{record}}"
+							],
+							"path": [
+								"{{recId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record(already deleted)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "16eedb6b-3de3-4c0d-88f2-132a809f25d7",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"   pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{backend}}{{record}}/{{recId}}",
+							"host": [
+								"{{backend}}{{record}}"
+							],
+							"path": [
+								"{{recId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "bbb3a0e1-91ae-40a4-8e1d-9c06fff8691a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e7ae2eb8-c0b7-4a3b-be6e-ba7a02b786a2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "4521a0c6-a9dd-4540-b0ec-5977695c2818",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "92593b79-5bc5-45e9-b751-9042468dc6b1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "c3f3b492-05a2-4de7-ad43-a5692a799044",
+			"key": "backend",
+			"value": "http://notenbuch.htl-vil:8840/api",
+			"type": "string"
+		},
+		{
+			"id": "5ad52439-6990-4d5a-8673-86e4c252ec59",
+			"key": "user",
+			"value": "/user",
+			"type": "string"
+		},
+		{
+			"id": "b6a0fc70-6177-47fa-834f-8953cf3f364f",
+			"key": "password",
+			"value": "/changePassword",
+			"type": "string"
+		},
+		{
+			"id": "25ed4723-72e1-4e04-9ff5-315fdff1cb18",
+			"key": "period",
+			"value": "/period",
+			"type": "string"
+		},
+		{
+			"id": "0c22ca51-e2d9-48e6-a0eb-1d3aa87425ea",
+			"key": "organisationalUnit",
+			"value": "/organisationalUnit",
+			"type": "string"
+		},
+		{
+			"id": "a7343aec-2bd9-4c94-aa0c-9b358255f9b2",
+			"key": "pupil",
+			"value": "/pupil",
+			"type": "string"
+		},
+		{
+			"id": "a7b2d58a-e954-48f3-ad5c-4424302a5dd5",
+			"key": "deleteAll",
+			"value": "/deleteAll",
+			"type": "string"
+		},
+		{
+			"id": "3473066b-64e6-404f-8a95-4d2bb047f79e",
+			"key": "login",
+			"value": "/login",
+			"type": "string"
+		},
+		{
+			"id": "562b2f36-ce2e-46f8-ab32-ea36dcd60435",
+			"key": "periodLabel",
+			"value": "/\"Schuljahr2020/21\"",
+			"type": "string"
+		},
+		{
+			"id": "35544391-3589-4e1e-9e77-5c1da935d862",
+			"key": "record",
+			"value": "/record",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
