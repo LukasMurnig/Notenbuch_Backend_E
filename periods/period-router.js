@@ -116,6 +116,23 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.put('/activatePeriod/:id', selectBy, async(req, res)=> {
+    let compareperiod = JSON.parse(JSON.stringify(req.selectedperiod));
+    const period = await Period.findAll({
+        where: {
+            active: toUpdateperiod.active
+        }
+    }, selectionFields);
+    period[0].update({
+        active: false
+    });
+    const savedperiod = await req.selectedperiod[0].update({
+        active: true
+    });
+
+    res.status(200).json(savedperiod);
+});
+
 router.put('/:id', selectBy, async (req, res) => {
     let payload = req.body;
     let length = Object.keys(payload).length +2;
@@ -154,8 +171,7 @@ router.put('/:id', selectBy, async (req, res) => {
                     label: period.label,
                     from: new Date(period.from),
                     till: new Date(period.till),
-                    active: false,
-                    owner: period.owner
+                    active: false
                 });
             }
             if (new Date(toUpdateperiod.from) == "Invalid Date" || isNaN(new Date(toUpdateperiod.from)) ||
@@ -167,8 +183,7 @@ router.put('/:id', selectBy, async (req, res) => {
                 label: toUpdateperiod.label,
                 from: new Date(toUpdateperiod.from),
                 till: new Date(toUpdateperiod.till),
-                active: toUpdateperiod.active,
-                owner: toUpdateperiod.owner
+                active: toUpdateperiod.active
             });
             res.status(200).json(savedperiod);
         } catch (error) {
