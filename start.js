@@ -49,6 +49,7 @@ function defaultSetup() {
     const periodRouter = require('./periods/period-router');
     const ouRouter = require('./organisationalUnits/organisationalUnits-router');
     const pupilRouter = require('./pupils/pupil-router');
+    const recordRouter = require('./records/record-router');
     app.use(bodyParser.json());
     app.use(bearerToken());
     app.use(cors());
@@ -63,8 +64,9 @@ function defaultSetup() {
     app.use('/api/period', periodRouter);
     app.use('/api/organisationalUnit', ouRouter);
     app.use('/api/pupil', pupilRouter);
+    app.use('/api/record', recordRouter);
     app.listen(port, function () {
-        console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`)
+        console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`);
     });
 }
 
