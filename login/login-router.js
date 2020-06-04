@@ -20,6 +20,7 @@ router.post('/login', async (req, res, next) => {
         return;
     }
     if (payload.username == undefined || payload.password == undefined) {
+        
         res.status(401).send('you are not authorised');
         return;
     }
@@ -28,15 +29,24 @@ router.post('/login', async (req, res, next) => {
         res.status(401).send('you are not authorised');
         return;
     }
-    let usernameDatenbank = payload.username;
-    let passwordDatenbank = crypto.createHash('sha256').update(payload.password).digest('base64');
+    let username = payload.username;
+    let password= crypto.createHash('sha256').update(payload.password).digest('base64');
     try {
-        const user = await User.findAll({
+        if (username.includes("@")){
+            var user = await User.findAll({
+                where: Sequelize.and({
+                    email: username,
+                    password
+                })
+            }, selectionFields);
+        }else{
+        var user = await User.findAll({
             where: Sequelize.and({
-                username: usernameDatenbank,
-                password: passwordDatenbank
+                username,
+                password
             })
         }, selectionFields);
+        }
         if (user.length < 1) {
             res.status(401).send('you are not authorised');
             return;
