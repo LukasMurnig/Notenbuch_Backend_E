@@ -120,7 +120,7 @@ router.put('/activatePeriod/:id', selectBy, async(req, res)=> {
     let compareperiod = JSON.parse(JSON.stringify(req.selectedperiod));
     const period = await Period.findAll({
         where: {
-            active: toUpdateperiod.active
+            active: true
         }
     }, selectionFields);
     period[0].update({
