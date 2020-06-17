@@ -1,6 +1,6 @@
 'use strict'
 
-let selectionFields = 'id label pupil_group_label subject_label notes owner pupil_label';
+let selectionFields = 'id label pupil_group_label subject_label notes owner mail';
 const express = require('express');
 const router = express.Router();
 const deleteRouter = express.Router();

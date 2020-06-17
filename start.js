@@ -1,6 +1,6 @@
 'use strict'
-const hostname = 'localhost';
-const port = process.env.PORT || 8840;
+const hostname = 'notenbuch.htl-vil';
+const port =  8840;
 const express = require('express');
 const app = express();
 const bearerToken = require('express-bearer-token');
@@ -44,12 +44,13 @@ function defaultSetup() {
     const deletePeriodRouter = require('./periods/period-router').deleteAllPeriod;
     const deleteAllOURouter = require('./organisationalUnits/organisationalUnits-router').deleteAllOU;
     const deleteAllPupilRouter = require('./pupils/pupil-router').deleteAllPupil;
-    const loginRouter = require('./login/login-router').router;
-    const authenticate = require('./login/login-router').authenticate;
+    const loginRouter = require('./certs/login/login-router').router;
+    const authenticate = require('./certs/login/login-router').authenticate;
     const periodRouter = require('./periods/period-router');
     const ouRouter = require('./organisationalUnits/organisationalUnits-router');
     const pupilRouter = require('./pupils/pupil-router');
     const recordRouter = require('./records/record-router');
+    const PupilToOURouter = require('./connectionTables/PupilToOU/PupilToOU-router');
     app.use(bodyParser.json());
     app.use(bearerToken());
     app.use(cors());
@@ -65,6 +66,7 @@ function defaultSetup() {
     app.use('/api/organisationalUnit', ouRouter);
     app.use('/api/pupil', pupilRouter);
     app.use('/api/record', recordRouter);
+    app.use('/api/pupilToOu', PupilToOURouter);
     app.listen(port, function () {
         console.log(`Success: Chat Web Application is up and running on ${hostname}:${port}.`);
     });
