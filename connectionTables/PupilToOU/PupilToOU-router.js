@@ -127,13 +127,13 @@ router.post('/addPupilToOU', async (req, res) =>{
         return;
     }
 
-    const OrganisationalUnit = await OrganisationalUnit.findAll({
+    const organisationalUnit = await OrganisationalUnit.findAll({
         where: {
             label: payload.OULabel
         }
     }, selectionFieldsOU);
 
-    if( OrganisationalUnit.length == 0){
+    if( organisationalUnit.length == 0){
         res.status(404).send('Their is no OrganisationalUnit with that Label');
         return;
     }
