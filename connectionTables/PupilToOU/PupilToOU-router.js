@@ -17,14 +17,14 @@ async function selectById(req, res, next){
             deleteAll(req, res);
             return;
         }else{
-        let PToOu = await PupilTOOrganisationalUnit.findAll({
+        var PToOu = await PupilTOOrganisationalUnit.findAll({
             where:{
                 id: id
             }
         });
         }
         if(PToOu.length == 0){
-            req.status(404).send('No Pupil To Ou with that id!');
+            res.status(404).send('No Pupil To Ou with that id!');
             return;
         }
 
@@ -176,12 +176,23 @@ router.post('/addPupilToOU', async (req, res) =>{
         return;
     }
 
+    const check = await PupilTOOrganisationalUnit.findAll({
+        where: Sequelize.and({
+            OULabel: payload.OULabel,
+            PIdentifier: payload.PIdentifier
+        })
+    },selectionFields);
+
+    if (check.length != 0){
+        res.status(400).send('Their is already a Pupil To Ou with that pupil and ou!');
+        return;
+    }
     const OuToPupil = await PupilTOOrganisationalUnit.create({
         OULabel: payload.OULabel,
         PIdentifier: payload.PIdentifier
     },selectionFields);
 
-    res.status(200).send('successful to add Pupil to OrganisationalUnit');
+    res.status(200).json(OuToPupil);
     }catch(error){
         console.log(error);
         res.status(500).send('something went wrong by adding Pupil to OU');
@@ -237,7 +248,7 @@ router.post('/getIdForOU', async (req, res)=>{
             })
         },selectionFields);
         
-        res.status(200).json(OuToPupil[0]);
+        res.status(200).json(OuToPupil);
         }catch(error){
             console.log(error);
             res.status(500).send('something went wrong by adding Pupil to OU');
@@ -257,15 +268,13 @@ router.delete('/:id', selectById, async (req, res) =>{
 
 async function deleteAll(req, res){
         try {
-                const data = await OrganisationalUnit.findAll({});
-                console.log(data);
+                const data = await PupilTOOrganisationalUnit.findAll({});
                 for (let i = 0; i < data.length; i++) {
-                    console.log(data[i]);
                     await data[i].destroy();
                 }
-                res.status(204).json('allOrganisationalUnitsdeleted!');
+                res.status(204).send('allOrganisationalUnitsdeleted!');
         } catch (error) {
-            res.status(500).json('something went wrong!');
+            res.status(500).send('something went wrong!');
         }
 }
 
