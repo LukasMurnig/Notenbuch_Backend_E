@@ -20,7 +20,7 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-bearer-token": "^2.4.0",
     "karacase": "^2.2.0",
     "mariadb": "^2.2.0",
